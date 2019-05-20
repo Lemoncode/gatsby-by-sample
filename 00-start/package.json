@@ -1,0 +1,57 @@
+{
+  "name": "gatsby-by-sample",
+  "version": "1.0.0",
+  "description": "Project with examples using Gatsby step by step",
+  "main": "index.js",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "start": "npm run develop"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lemoncode/gatsby-by-sample.git"
+  },
+  "keywords": [
+    "gatsby",
+    "lemoncode",
+    "step",
+    "by",
+    "step"
+  ],
+  "author": "Lemoncode",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lemoncode/gatsby-by-sample/issues"
+  },
+  "homepage": "https://github.com/Lemoncode/gatsby-by-sample#readme",
+  "dependencies": {
+    "@emotion/core": "^10.0.10",
+    "@emotion/styled": "^10.0.11",
+    "emotion-theming": "^10.0.10",
+    "gatsby": "^2.4.4",
+    "gatsby-image": "^2.0.41",
+    "gatsby-plugin-alias-imports": "^1.0.5",
+    "gatsby-plugin-emotion": "^4.0.6",
+    "gatsby-plugin-manifest": "^2.1.1",
+    "gatsby-plugin-react-helmet": "^3.0.12",
+    "gatsby-plugin-sharp": "^2.0.37",
+    "gatsby-plugin-typescript": "^2.0.13",
+    "gatsby-plugin-web-font-loader": "^1.0.4",
+    "gatsby-remark-images-contentful": "^2.0.11",
+    "gatsby-source-contentful": "^2.0.56",
+    "gatsby-source-filesystem": "^2.0.33",
+    "gatsby-transformer-remark": "^2.3.12",
+    "gatsby-transformer-sharp": "^2.1.19",
+    "normalize.css": "^8.0.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.17",
+    "@types/react-helmet": "^5.0.8",
+    "dotenv": "^8.0.0",
+    "typescript": "^3.4.5"
+  }
+}
