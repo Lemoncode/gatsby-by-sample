@@ -10,17 +10,19 @@ const StyledHeader = s.Header.withComponent(AppBar);
 const StyledFooter = s.Footer.withComponent(Footer);
 interface Props {
   seoComponent: React.ReactNode;
+  pathname: string;
 }
 
 export const AppLayout: React.StatelessComponent<Props> = ({
   seoComponent,
   children,
+  pathname,
 }) => (
   <ThemeProvider theme={theme}>
     <Global styles={global} />
     {seoComponent}
     <s.Layout>
-      <StyledHeader />
+      <StyledHeader pathname={pathname}/>
       <s.Body>{children}</s.Body>
       <StyledFooter />
     </s.Layout>
