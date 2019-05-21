@@ -15,6 +15,7 @@ module.exports = {
           common: path.resolve(__dirname, 'src/common'),
           core: path.resolve(__dirname, 'src/core'),
           layout: path.resolve(__dirname, 'src/layout'),
+          pods: path.resolve(__dirname, 'src/pods'),
         },
       },
     },

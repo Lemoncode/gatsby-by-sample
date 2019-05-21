@@ -12,6 +12,7 @@
       "common": ["common"],
       "core": ["core"],
       "layout": ["layout"],
+      "pods": ["pods"],
     }
   },
   "include": ["./src/**/*"]

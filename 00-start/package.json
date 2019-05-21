@@ -28,6 +28,8 @@
   "dependencies": {
     "@emotion/core": "^10.0.10",
     "@emotion/styled": "^10.0.11",
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
     "emotion-theming": "^10.0.10",
     "gatsby": "^2.4.4",
     "gatsby-image": "^2.0.41",

@@ -4,10 +4,7 @@ import { weights } from './weights';
 import { fontFamily } from '../styles';
 
 export interface Typography {
-  home: {
-    title;
-    subtitle;
-  };
+  headerTitle;
   title;
   headerLink;
   body;
@@ -18,7 +15,7 @@ export interface Typography {
   };
   formError;
   button;
-  copyright;
+  footer;
 }
 
 const common = css`
@@ -26,20 +23,12 @@ const common = css`
 `;
 
 export const typography: Typography = {
-  home: {
-    title: css`
-      ${common}
-      font-size: 3rem;
-      font-weight: ${weights.light};
-      color: ${colors.light};
-    `,
-    subtitle: css`
-      ${common}
-      font-size: 1rem;
-      font-weight: ${weights.regular};
-      color: ${colors.light};
-    `,
-  },
+  headerTitle: css`
+    ${common}
+    font-size: 1.25rem;
+    font-weight: ${weights.bold};
+    color: ${colors.dark};
+  `,
   title: css`
     ${common}
     font-size: 2.5rem;
@@ -95,7 +84,7 @@ export const typography: Typography = {
     font-weight: ${weights.regular};
     color: ${colors.light};
   `,
-  copyright: css`
+  footer: css`
     ${common}
     font-size: 0.8rem;
     font-weight: ${weights.regular};
