@@ -2,10 +2,11 @@ import * as React from 'react';
 import { PageRendererProps } from 'gatsby';
 import { SEO } from 'common/components';
 import { AppLayout } from 'layout';
+import { Blog } from 'pods/blog';
 
 const IndexPage: React.FunctionComponent<PageRendererProps> = props => (
   <AppLayout
-  pathname={props.location.pathname}
+    pathname={props.location.pathname}
     seoComponent={
       <SEO
         title="Blog"
@@ -19,7 +20,7 @@ const IndexPage: React.FunctionComponent<PageRendererProps> = props => (
       />
     }
   >
-    <h1>Blog page</h1>
+    <Blog />
   </AppLayout>
 );
 

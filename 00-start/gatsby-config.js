@@ -61,6 +61,14 @@ module.exports = {
         path: path.resolve(__dirname, 'src/core/images'),
       },
     },
+    {
+      // To load mock posts
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'posts',
+        path: path.resolve(__dirname, 'src/mocks/mock-posts'),
+      },
+    },
     // Render Contentful markdown from string to HTML
     {
       resolve: 'gatsby-transformer-remark',
