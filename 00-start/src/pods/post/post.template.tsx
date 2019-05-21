@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { graphql } from 'gatsby';
-import { SEO, Post } from 'common/components';
+import { SEO } from 'common/components';
 import { AppLayout } from 'layout';
+import { Post } from './post.component';
 
 export const query = graphql`
   query($slug: String) {

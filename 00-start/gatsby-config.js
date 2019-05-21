@@ -27,7 +27,7 @@ module.exports = {
         name: 'Gatsby by sample',
         short_name: 'Lemoncode-Gatsby',
         start_url: '/',
-        background_color: '#f5f7fb', //TODO
+        background_color: '#f5f7fb',
         theme_color: '#d9d900',
         display: 'fullscreen',
         icon: 'src/core/images/favicon.png',

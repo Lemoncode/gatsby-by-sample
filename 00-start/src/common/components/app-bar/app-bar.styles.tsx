@@ -3,7 +3,7 @@ import { styled } from 'core/styles';
 export const AppBar = styled.div`
   && {
     background-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.dark};
+    color: ${({ theme }) => theme.colors.secondary};
   }
 `;
 
