@@ -17,7 +17,7 @@ export const AppBar: React.FunctionComponent<Props> = props => (
       <IconButton aria-label="Open drawer">
         <MenuIcon />
       </IconButton>
-      <s.Title>Blog</s.Title>
+      <s.Title>Home</s.Title>
     </Toolbar>
   </AppBarStyled>
 );

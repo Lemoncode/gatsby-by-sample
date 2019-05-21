@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { SEO } from 'common/components';
 import { AppLayout } from 'layout';
-import { Home } from 'pods/home';
 
-const IndexPage = props => (
+const IndexPage = () => (
   <AppLayout
     seoComponent={
       <SEO
-        title="Home"
+        title="Blog"
         keywords={[
           'lemoncode',
           'gatsby',
@@ -18,7 +17,7 @@ const IndexPage = props => (
       />
     }
   >
-    <Home />
+    <h1>Blog page</h1>
   </AppLayout>
 );
 

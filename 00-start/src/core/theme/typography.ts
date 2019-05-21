@@ -6,6 +6,7 @@ import { fontFamily } from '../styles';
 export interface Typography {
   headerTitle;
   title;
+  subtitle;
   headerLink;
   body;
   thumbnail: {
@@ -32,6 +33,13 @@ export const typography: Typography = {
   title: css`
     ${common}
     font-size: 2.5rem;
+    font-weight: ${weights.bold};
+    color: ${colors.dark};
+    text-align: center;
+  `,
+  subtitle: css`
+    ${common}
+    font-size: 1.5rem;
     font-weight: ${weights.bold};
     color: ${colors.dark};
     text-align: center;
