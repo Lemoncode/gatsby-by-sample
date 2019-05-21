@@ -2,7 +2,7 @@
 
 We will start from previous example `00-start`:
 
-- Posts query:
+- Post List query:
 
 ```graphql
 query {
@@ -15,6 +15,27 @@ query {
         }
       }
     }
+  }
+}
+```
+
+> NOTE: with order
+```
+allMarkdownRemark(
+      sort: { fields: frontmatter___date, order: ASC }
+    )
+```
+
+- Post item query:
+
+```graphql
+query {
+  post: markdownRemark(frontmatter: { path: { eq: "/blog/first-post" } }) {
+    frontmatter {
+      title
+      date
+    }
+    html
   }
 }
 ```

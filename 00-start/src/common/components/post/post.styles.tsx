@@ -18,6 +18,7 @@ export const Subtitle = styled.h2`
 export const Body = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   max-width: 100%;
   margin-top: 3rem;
 `

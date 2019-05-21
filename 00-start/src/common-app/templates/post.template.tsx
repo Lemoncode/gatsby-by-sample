@@ -3,39 +3,40 @@ import { graphql } from 'gatsby';
 import { SEO, Post } from 'common/components';
 import { AppLayout } from 'layout';
 
-// query($slug: String) {
-//   post: contentfulPost(path: { eq: $slug }) {
-//     title
-//     date
-//     body {
-//       childMarkdownRemark {
-//         html
-//       }
-//     }
-//   }
-// }
 export const query = graphql`
+  query($slug: String) {
+    post: markdownRemark(frontmatter: { path: { eq: $slug } }) {
+      frontmatter {
+        title
+        date
+      }
+      html
+    }
+  }
 `;
 
 interface Props {
   data: { post };
   pageContext: {
-    title: string;
-    date: string;
     slug: string;
   };
 }
 
 const PostTemplate: React.StatelessComponent<Props> = ({
   pageContext,
-  data,
+  data: {
+    post: {
+      frontmatter: { title, date },
+      html,
+    },
+  },
 }) => {
   return (
     <AppLayout
       pathname={pageContext.slug}
       seoComponent={
         <SEO
-          title={data.post.title}
+          title={title}
           keywords={[
             'lemoncode',
             'gatsby',
@@ -47,11 +48,7 @@ const PostTemplate: React.StatelessComponent<Props> = ({
         />
       }
     >
-      <Post
-        title={data.post.title}
-        date={data.post.date}
-        body={data.post.body.childMarkdownRemark.html}
-      />
+      <Post title={title} date={date} body={html} />
     </AppLayout>
   );
 };

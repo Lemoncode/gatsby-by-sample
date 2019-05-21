@@ -5,7 +5,9 @@ const StyledPost = s.Post.withComponent(Link);
 
 const query = graphql`
   query {
-    postListQuery: allMarkdownRemark {
+    postListQuery: allMarkdownRemark(
+      sort: { fields: frontmatter___date, order: ASC }
+    ) {
       edges {
         node {
           frontmatter {
@@ -26,7 +28,12 @@ export const Blog: React.FunctionComponent = () => (
         <s.Title>Blog Page</s.Title>
         <s.Posts>
           {postListQuery.edges.map(edge => (
-            <StyledPost to={edge.node.frontmatter.path} key={edge.node.frontmatter.title}>{edge.node.frontmatter.title}</StyledPost>
+            <StyledPost
+              to={edge.node.frontmatter.path}
+              key={edge.node.frontmatter.title}
+            >
+              {edge.node.frontmatter.title}
+            </StyledPost>
           ))}
         </s.Posts>
       </s.Container>
