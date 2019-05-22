@@ -66,7 +66,7 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'posts',
-        path: path.resolve(__dirname, 'src/mocks/mock-posts'),
+        path: path.resolve(__dirname, 'src/pods/post/mocks'),
       },
     },
     // Render Contentful markdown from string to HTML
