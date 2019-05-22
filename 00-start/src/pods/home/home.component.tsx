@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Link } from 'gatsby';
 import { routes } from 'core/routes';
-const logo = require('core/images/home-logo.png');
 import * as s from './home.styles';
 
 export const Home: React.FunctionComponent = () => (

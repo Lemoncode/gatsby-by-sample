@@ -1,6 +1,196 @@
 # 01-implementation
 
+In this sample we are going to start working with Gatsby pages, React components, images, Graphql, dynamic pages and connect it with Contentful.
+
 We will start from previous example `00-start`:
+
+```bash
+npm install
+```
+
+- This project looks like normal React project, but we have a special file `gatsby-config.js` where we are going to `config` all gatsby's plugins that we will install.
+
+- Run app:
+
+```bash
+npm start
+```
+
+- Now, we want to add the `core/images/home-logo.png`:
+
+### ./src/pods/home/home.component.tsx
+
+```diff
+import * as React from 'react';
+import { Link } from 'gatsby';
+import { routes } from 'core/routes';
+import * as s from './home.styles';
++ const logo = require('core/images/home-logo.png');
+
+export const Home: React.FunctionComponent = () => (
+  <s.Container>
+    <s.Title>Welcome to this website</s.Title>
+-   <s.Title>(Image here)</s.Title>
++   <img src={logo} />
+    <s.Subtitle>
+      Check out our <Link to={routes.blog}>blog</Link>
+    </s.Subtitle>
+  </s.Container>
+);
+```
+
+- Issues related with approach:
+    - The size needed for the design.
+    - We don't need larger image sizes for smartphones or tables, only for desktop.
+    - Render images is slow for initial page load.
+
+- So, we are going to use [gatsby-image](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-image) library along with `gatsby-transformer-sharp`, `gatsby-plugin-sharp` and `gatsby-source-filesystem`:
+
+### ./gatsby-config.js
+
+```javascript
+...
+  plugins: [
+    ...
+    'gatsby-transformer-sharp', // To process images
+    'gatsby-plugin-sharp', // Used by gatsby-transformer-sharp
+    {
+      // To load images
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'images',
+        path: path.resolve(__dirname, 'src/core/images'),
+      },
+    },
+  ]
+```
+
+- Using `gatsby-image`:
+
+### ./src/pods/home/home.component.tsx
+
+```diff
+import * as React from 'react';
++ import Img from 'gatsby-image';
+import { Link } from 'gatsby';
+import { routes } from 'core/routes';
+import * as s from './home.styles';
+- const logo = require('core/images/home-logo.png');
+
+export const Home: React.FunctionComponent = () => (
+  <s.Container>
+    <s.Title>Welcome to this website</s.Title>
+-   <img src={logo} />
++   <Img fixed={...} />
+    <s.Subtitle>
+      Check out our <Link to={routes.blog}>blog</Link>
+    </s.Subtitle>
+  </s.Container>
+);
+
+```
+
+- How can we get image src? How it works?. We can take a look to: `http://localhost:8000/___graphql`:
+
+```graphql
+query {
+  homeLogo: file(relativePath: {eq: "home-logo.png"}) {
+    childImageSharp {
+      fixed {
+        base64
+        originalName
+      }
+    }
+  }
+}
+
+```
+
+- Use it in `home` component. If we want to get all properties, gatsby has a special keyword or [fragments](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-image#fragments) to get it::
+
+### ./src/pods/home/home.component.tsx
+
+```diff
+import * as React from 'react';
+import Img from 'gatsby-image';
+- import { Link } from 'gatsby';
++ import { Link, StaticQuery, graphql } from 'gatsby';
+import { routes } from 'core/routes';
+import * as s from './home.styles';
+
++ const query = graphql`
++   query {
++     homeLogo: file(relativePath: { eq: "home-logo.png" }) {
++       childImageSharp {
++         fixed {
++           ...GatsbyImageSharpFixed
++         }
++       }
++     }
++   }
++ `;
+
+export const Home: React.FunctionComponent = () => (
++ <StaticQuery
++   query={query}
++   render={({ homeLogo }) => (
+      <s.Container>
+        <s.Title>Welcome to this website</s.Title>
+-       <Img fixed={...} />
++       <Img fixed={homeLogo.childImageSharp.fixed} />
+        <s.Subtitle>
+          Check out our <Link to={routes.blog}>blog</Link>
+        </s.Subtitle>
+      </s.Container>
++   )}
++ />
+);
+
+```
+
+- It load an image resized to `400x400`. If we want to get image size by `screen size`, we have to use `fluid` instead:
+
+> NOTE: Show `Network tab` chrome dev tools
+
+### ./src/pods/home/home.component.tsx
+
+```diff
+...
+
+const query = graphql`
+  query {
+    homeLogo: file(relativePath: { eq: "home-logo.png" }) {
+      childImageSharp {
+-       fixed {
++       fluid(maxWidth: 1000)
+-         ...GatsbyImageSharpFixed
++          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+  }
+`;
+
+export const Home: React.FunctionComponent = () => (
+  <StaticQuery
+    query={query}
+    render={({ homeLogo }) => (
+      <s.Container>
+        <s.Title>Welcome to this website</s.Title>
++       <s.ImageContainer>
+-         <Img fixed={homeLogo.childImageSharp.fixed} />
++         <Img fluid={homeLogo.childImageSharp.fluid} />
++       </s.ImageContainer>
+        <s.Subtitle>
+          Check out our <Link to={routes.blog}>blog</Link>
+        </s.Subtitle>
+      </s.Container>
+    )}
+  />
+);
+
+```
+
 
 - Post List query:
 
