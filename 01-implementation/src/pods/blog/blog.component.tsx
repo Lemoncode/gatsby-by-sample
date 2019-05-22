@@ -5,14 +5,10 @@ const PostTitle = s.PostTitle.withComponent(Link);
 
 const query = graphql`
   query {
-    postListQuery: allMarkdownRemark(
-      sort: { fields: frontmatter___date, order: ASC }
-    ) {
+    postListQuery: allContentfulPost(sort: { fields: date, order: ASC }) {
       nodes {
-        frontmatter {
-          title
-          path
-        }
+        title
+        path
       }
     }
   }
@@ -26,8 +22,8 @@ export const Blog: React.FunctionComponent = () => (
         <s.Title>Blog Page</s.Title>
         <s.Posts>
           {postListQuery.nodes.map(node => (
-            <PostTitle to={node.frontmatter.path} key={node.frontmatter.title}>
-              {node.frontmatter.title}
+            <PostTitle to={node.path} key={node.title}>
+              {node.title}
             </PostTitle>
           ))}
         </s.Posts>

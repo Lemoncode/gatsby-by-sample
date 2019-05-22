@@ -46,14 +46,14 @@ module.exports = {
         },
       },
     },
-    // {
-    //   // To load contentful account
-    //   resolve: 'gatsby-source-contentful',
-    //   options: {
-    //     spaceId: process.env.CONTENTFUL_SPACE_ID,
-    //     accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-    //   },
-    // },
+    {
+      // To load contentful account
+      resolve: 'gatsby-source-contentful',
+      options: {
+        spaceId: process.env.CONTENTFUL_SPACE_ID,
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+      },
+    },
     {
       // To load images
       resolve: 'gatsby-source-filesystem',

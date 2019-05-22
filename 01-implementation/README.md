@@ -409,6 +409,233 @@ export const query = graphql`
 
 ```
 
+- Next step could be use [Contentful](https://www.contentful.com/) as CMS to create, manage and dristribute content. We need to provide `Space Id` and `Access Token` via environment variables, and use `gatsby-source-contentful` plugin. If we use images in contentful markdowns, we have to install `gatsby-remark-images-contentful` too:
+
+### ./gatsby-config.js
+
+```javascript
+...
+  plugins: [
+    ...
+    {
+      // To load contentful account
+      resolve: 'gatsby-source-contentful',
+      options: {
+        spaceId: process.env.CONTENTFUL_SPACE_ID,
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+      },
+    },
+    // Render Contentful markdown from string to HTML
+    {
+      resolve: 'gatsby-transformer-remark',
+      options: {
+        plugins: [
+          {
+            resolve: 'gatsby-remark-images-contentful',
+          },
+        ],
+      },
+    },
+  ]
+...
+```
+
+- Update `gatsby-node` file:
+
+### ./gatsby-node.js
+
+```diff
+...
+
+exports.createPages = async ({ graphql, actions }) => {
+...
+
+  postListQuery.nodes.forEach(node => {
+    const { path } = node.frontmatter;
++   if (path) {
+      createPage({
+        path,
+        component: resolve(__dirname, 'src/pods/post/post.template.tsx'),
+        context: {
+          slug: path,
+        },
+      });
++   }
+  });
+};
+
+```
+
+- Run app:
+
+```bash
+npm start
+```
+
+- Take a look to GraphQL server. Now we have `contentfulPost`:
+
+```graphql
+query {
+  postListQuery: allContentfulPost {
+    nodes {
+      title
+      date
+      path
+      body {
+        childMarkdownRemark {
+          html
+        }
+      }
+    }
+  }
+}
+
+```
+
+- Update `gatsby-node` to retrieve contentful posts:
+
+### ./gatsby-node.js
+
+```diff
+const { resolve } = require('path');
+
+const query = `
+query {
+- postListQuery: allMarkdownRemark {
++ postListQuery: allContentfulPost {
+    nodes {
+-     frontmatter {
+        path
+-     }
+    }
+  }
+}
+`;
+
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage } = actions;
+  const { data } = await graphql(query);
+  const { postListQuery } = data;
+
+  postListQuery.nodes.forEach(node => {
+-   const { path } = node.frontmatter;
++   const { path } = node;
+    if (path) {
+      createPage({
+        path,
+        component: resolve(__dirname, 'src/pods/post/post.template.tsx'),
+        context: {
+          slug: path,
+        },
+      });
+    }
+  });
+};
+
+```
+
+- Update `post.template` too:
+
+### ./src/pods/post/post.template.tsx
+
+```diff
+import * as React from 'react';
+import { graphql } from 'gatsby';
+import { SEO } from 'common/components';
+import { AppLayout } from 'layout';
+import { Post } from './post.component';
+
+export const query = graphql`
+  query($slug: String) {
+-   post: markdownRemark(frontmatter: { path: { eq: $slug } }) {
++   post: contentfulPost(path: { eq: $slug }) {
+-     frontmatter {
+      title
+      date
+-     }
++     body {
++       childMarkdownRemark {
+          html
++       }
++     }
+    }
+  }
+`;
+
+...
+
+const PostTemplate: React.StatelessComponent<Props> = ({
+  pageContext: { slug },
+  data: {
+    post: {
+-     frontmatter: { title, date },
++     title,
++     date,
+-     html,
++     body: {
++       childMarkdownRemark: { html },
++     },
+    },
+  },
+}) => {
+...
+
+```
+
+- And finally, `blog` component:
+
+### ./src/pods/blog/blog.component.tsx
+
+```diff
+import * as React from 'react';
+import { Link, StaticQuery, graphql } from 'gatsby';
+import * as s from './blog.styles';
+const PostTitle = s.PostTitle.withComponent(Link);
+
+const query = graphql`
+  query {
+-   postListQuery: allMarkdownRemark(
++   postListQuery: allContentfulPost(
+-     sort: { fields: frontmatter___date, order: ASC }
++     sort: { fields: date, order: ASC }
+    ) {
+      nodes {
+-       frontmatter {
+        title
+        path
+-       }
+      }
+    }
+  }
+`;
+
+export const Blog: React.FunctionComponent = () => (
+  <StaticQuery
+    query={query}
+    render={({ postListQuery }) => (
+      <s.Container>
+        <s.Title>Blog Page</s.Title>
+        <s.Posts>
+          {postListQuery.nodes.map(node => (
+-           <PostTitle to={node.frontmatter.path} key={node.frontmatter.title}>
++           <PostTitle to={node.path} key={node.title}>
+-             {node.frontmatter.title}
++             {node.title}
+            </PostTitle>
+          ))}
+        </s.Posts>
+      </s.Container>
+    )}
+  />
+);
+
+```
+
+- Stop and run app again:
+
+```bash
+npm start
+```
 
 # About Basefactor + Lemoncode
 
