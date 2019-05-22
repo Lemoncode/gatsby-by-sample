@@ -63,6 +63,7 @@ export const Home: React.FunctionComponent = () => (
       },
     },
   ]
+...
 ```
 
 - Using `gatsby-image`:
@@ -192,18 +193,57 @@ export const Home: React.FunctionComponent = () => (
 
 ```
 
+- Take a look to `blog.component`:
 
-- Post List query:
+### ./src/pods/blog/blog.component.tsx
+
+```javascript
+import * as React from 'react';
+import { Link } from 'gatsby';
+import * as s from './blog.styles';
+const PostTitle = s.PostTitle.withComponent(Link);
+
+export const Blog: React.FunctionComponent = () => (
+  <s.Container>
+    <s.Title>Blog Page</s.Title>
+    <s.Posts>
+      <PostTitle to="/my-post">My post</PostTitle>
+    </s.Posts>
+  </s.Container>
+);
+
+```
+
+- We are going to use `common-app/mock-posts` to define posts in markdown, `gatsby-transformer-remark` and `gatsby-source-filesystem` to load md files and render as `HTML`:
+
+### ./gatsby-config.js
+
+```javascript
+...
+  plugins: [
+    ...
+    'gatsby-transformer-remark', // To process md files
+    {
+      // To load mock posts
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'posts',
+        path: path.resolve(__dirname, 'src/common-app/mock-posts'),
+      },
+    },
+  ]
+...
+```
+
+- Take a look graphql server:
 
 ```graphql
 query {
   postListQuery: allMarkdownRemark {
-    edges {
-      node {
-        frontmatter {
-          title
-          path
-        }
+    nodes {
+      frontmatter {
+        title
+        path
       }
     }
   }
@@ -216,6 +256,56 @@ allMarkdownRemark(
       sort: { fields: frontmatter___date, order: ASC }
     )
 ```
+
+- Update `blog` component:
+
+### ./src/pods/blog/blog.component.tsx
+
+```diff
+import * as React from 'react';
+- import { Link } from 'gatsby';
++ import { Link, StaticQuery, graphql } from 'gatsby';
+import * as s from './blog.styles';
+const PostTitle = s.PostTitle.withComponent(Link);
+
++ const query = graphql`
++   query {
++     postListQuery: allMarkdownRemark(
++       sort: { fields: frontmatter___date, order: ASC }
++     ) {
++       nodes {
++         frontmatter {
++           title
++           path
++         }
++       }
++     }
++   }
++ `;
+
+export const Blog: React.FunctionComponent = () => (
++ <StaticQuery
++   query={query}
++   render={({ postListQuery }) => (
+      <s.Container>
+        <s.Title>Blog Page</s.Title>
+        <s.Posts>
++         {postListQuery.nodes.map(node => (
+-           <PostTitle to="/my-post">My post</PostTitle>
++           <PostTitle to={node.frontmatter.path} key={node.frontmatter.title}>
++             {node.frontmatter.title}
++           </PostTitle>
++         ))}
+        </s.Posts>
+      </s.Container>
++   )}
++ />
+);
+
+```
+
+- Now, it's time create the post's page, dynamically:
+
 
 - Post item query:
 

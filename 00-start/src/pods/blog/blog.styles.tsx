@@ -18,6 +18,6 @@ export const Posts = styled.div`
   width: 100%;
 `
 
-export const Post = styled.div`
+export const PostTitle = styled.div`
   margin-top: 3rem;
 `

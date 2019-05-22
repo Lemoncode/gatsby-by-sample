@@ -13,6 +13,7 @@ module.exports = {
       options: {
         alias: {
           common: path.resolve(__dirname, 'src/common'),
+          'common-app': path.resolve(__dirname, 'src/common-app'),
           core: path.resolve(__dirname, 'src/core'),
           layout: path.resolve(__dirname, 'src/layout'),
           pods: path.resolve(__dirname, 'src/pods'),
@@ -66,7 +67,7 @@ module.exports = {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'posts',
-        path: path.resolve(__dirname, 'src/pods/post/mocks'),
+        path: path.resolve(__dirname, 'src/common-app/mock-posts'),
       },
     },
     // Render Contentful markdown from string to HTML

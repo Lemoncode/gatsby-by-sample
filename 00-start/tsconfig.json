@@ -10,6 +10,7 @@
     "baseUrl": "src",
     "paths": {
       "common": ["common"],
+      "common-app": ["common-app"],
       "core": ["core"],
       "layout": ["layout"],
       "pods": ["pods"],

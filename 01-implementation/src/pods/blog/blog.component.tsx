@@ -1,19 +1,17 @@
 import * as React from 'react';
-import { StaticQuery, graphql, Link } from 'gatsby';
+import { Link, StaticQuery, graphql } from 'gatsby';
 import * as s from './blog.styles';
-const StyledPost = s.Post.withComponent(Link);
+const PostTitle = s.PostTitle.withComponent(Link);
 
 const query = graphql`
   query {
     postListQuery: allMarkdownRemark(
       sort: { fields: frontmatter___date, order: ASC }
     ) {
-      edges {
-        node {
-          frontmatter {
-            title
-            path
-          }
+      nodes {
+        frontmatter {
+          title
+          path
         }
       }
     }
@@ -27,13 +25,10 @@ export const Blog: React.FunctionComponent = () => (
       <s.Container>
         <s.Title>Blog Page</s.Title>
         <s.Posts>
-          {postListQuery.edges.map(edge => (
-            <StyledPost
-              to={edge.node.frontmatter.path}
-              key={edge.node.frontmatter.title}
-            >
-              {edge.node.frontmatter.title}
-            </StyledPost>
+          {postListQuery.nodes.map(node => (
+            <PostTitle to={node.frontmatter.path} key={node.frontmatter.title}>
+              {node.frontmatter.title}
+            </PostTitle>
           ))}
         </s.Posts>
       </s.Container>
