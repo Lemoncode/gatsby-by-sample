@@ -304,10 +304,31 @@ export const Blog: React.FunctionComponent = () => (
 
 ```
 
-- Now, it's time create the post's page, dynamically:
+- Now, it's time create the post's page, dynamically. Take a look to `post.component`:
 
+### ./src/pods/post/post.component.tsx
 
-- Post item query:
+```javascript
+import * as React from 'react';
+import * as s from './post.styles';
+
+interface Props {
+  title: string;
+  date: string;
+  body;
+}
+
+export const Post: React.FunctionComponent<Props> = ({ title, date, body }) => (
+  <s.Container>
+    <s.Title>{title}</s.Title>
+    <s.Subtitle>{date}</s.Subtitle>
+    <s.Body dangerouslySetInnerHTML={{ __html: body }} />
+  </s.Container>
+);
+
+```
+
+- Take a look to GraphQL server:
 
 ```graphql
 query {
@@ -320,6 +341,74 @@ query {
   }
 }
 ```
+
+- To create a dynamic page, we have to overwrite [createPages](https://www.gatsbyjs.org/docs/node-apis/#createPages) method in `gatsby-node.js`:
+
+### ./gatsby-node.js
+
+```diff
+const { resolve } = require('path');
+
+const query = `
++ query {
++   postListQuery: allMarkdownRemark {
++     nodes {
++       frontmatter {
++         path
++       }
++     }
++   }
++ }
+`;
+
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage } = actions;
+  const { data } = await graphql(query);
++ const { postListQuery } = data;
+
++ postListQuery.nodes.forEach(node => {
++   const { path } = node.frontmatter;
++   createPage({
++     path,
++     component: resolve(__dirname, 'src/pods/post/post.template.tsx'),
++     context: {
++       slug: path,
++     },
++   });
++ });
+};
+
+```
+
+- Update post `template`:
+
+### ./src/pods/post/post.template.tsx
+
+> NOTE: Difference between [Static Query and page query](https://www.gatsbyjs.org/docs/static-query/#how-staticquery-differs-from-page-query)
+
+```diff
+import * as React from 'react';
+import { graphql } from 'gatsby';
+import { SEO } from 'common/components';
+import { AppLayout } from 'layout';
+import { Post } from './post.component';
+
+export const query = graphql`
++ query($slug: String) {
++   post: markdownRemark(frontmatter: { path: { eq: $slug } }) {
++     frontmatter {
++       title
++       date
++     }
++     html
++   }
++ }
+`;
+
+...
+
+```
+
 
 # About Basefactor + Lemoncode
 

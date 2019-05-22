@@ -3,11 +3,9 @@ const { resolve } = require('path');
 const query = `
 query {
   postListQuery: allMarkdownRemark {
-    edges {
-      node {
-        frontmatter {
-          path
-        }
+    nodes {
+      frontmatter {
+        path
       }
     }
   }
@@ -19,14 +17,11 @@ exports.createPages = async ({ graphql, actions }) => {
   const { data } = await graphql(query);
   const { postListQuery } = data;
 
-  postListQuery.edges.forEach(({ node }) => {
+  postListQuery.nodes.forEach(node => {
     const { path } = node.frontmatter;
     createPage({
       path,
-      component: resolve(
-        __dirname,
-        'src/pods/post/post.template.tsx'
-      ),
+      component: resolve(__dirname, 'src/pods/post/post.template.tsx'),
       context: {
         slug: path,
       },

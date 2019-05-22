@@ -5,15 +5,7 @@ import { AppLayout } from 'layout';
 import { Post } from './post.component';
 
 export const query = graphql`
-  query($slug: String) {
-    post: markdownRemark(frontmatter: { path: { eq: $slug } }) {
-      frontmatter {
-        title
-        date
-      }
-      html
-    }
-  }
+
 `;
 
 interface Props {
@@ -24,7 +16,7 @@ interface Props {
 }
 
 const PostTemplate: React.StatelessComponent<Props> = ({
-  pageContext,
+  pageContext: { slug },
   data: {
     post: {
       frontmatter: { title, date },
@@ -34,7 +26,7 @@ const PostTemplate: React.StatelessComponent<Props> = ({
 }) => {
   return (
     <AppLayout
-      pathname={pageContext.slug}
+      pathname={slug}
       seoComponent={
         <SEO
           title={title}
@@ -44,7 +36,7 @@ const PostTemplate: React.StatelessComponent<Props> = ({
             'gatsby by sample',
             'frontent',
             'ssr',
-            pageContext.slug,
+            slug,
           ]}
         />
       }

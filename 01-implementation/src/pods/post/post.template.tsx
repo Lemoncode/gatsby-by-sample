@@ -24,7 +24,7 @@ interface Props {
 }
 
 const PostTemplate: React.StatelessComponent<Props> = ({
-  pageContext,
+  pageContext: { slug },
   data: {
     post: {
       frontmatter: { title, date },
@@ -34,7 +34,7 @@ const PostTemplate: React.StatelessComponent<Props> = ({
 }) => {
   return (
     <AppLayout
-      pathname={pageContext.slug}
+      pathname={slug}
       seoComponent={
         <SEO
           title={title}
@@ -44,7 +44,7 @@ const PostTemplate: React.StatelessComponent<Props> = ({
             'gatsby by sample',
             'frontent',
             'ssr',
-            pageContext.slug,
+            slug,
           ]}
         />
       }
