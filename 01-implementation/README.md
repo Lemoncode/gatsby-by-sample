@@ -150,7 +150,8 @@ export const Home: React.FunctionComponent = () => (
 
 - It load an image resized to `400x400`. If we want to get image size by `screen size`, we have to use `fluid` instead:
 
-> NOTE: Show `Network tab` chrome dev tools
+> NOTE: Show `Network tab` chrome dev tools and `srcset`
+> [srcset](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
 
 ### ./src/pods/home/home.component.tsx
 

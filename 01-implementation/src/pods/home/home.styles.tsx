@@ -17,5 +17,5 @@ export const Subtitle = styled.h2`
 `;
 
 export const ImageContainer = styled.div`
-  width: 100%;
+  width: 50%;
 `
