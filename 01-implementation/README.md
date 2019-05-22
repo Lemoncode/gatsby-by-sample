@@ -637,6 +637,10 @@ export const Blog: React.FunctionComponent = () => (
 npm start
 ```
 
+- Finally, we are going to deploy this project in [Netlify](https://www.netlify.com/).
+
+- Upload project to repository and follow 3 Netlify steps.
+
 # About Basefactor + Lemoncode
 
 We are an innovating team of Javascript experts, passionate about turning your ideas into robust products.
