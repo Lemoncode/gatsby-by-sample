@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Project with examples using Gatsby step by step",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "build": "gatsby build",
+    "start": "gatsby develop"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lemoncode/gatsby-by-sample.git"
@@ -27,12 +30,21 @@
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
     "emotion-theming": "^10.0.10",
+    "gatsby": "^2.8.8",
+    "gatsby-plugin-alias-imports": "^1.0.5",
+    "gatsby-plugin-emotion": "^4.0.7",
+    "gatsby-plugin-manifest": "^2.1.1",
+    "gatsby-plugin-react-helmet": "^3.0.12",
+    "gatsby-plugin-typescript": "^2.0.15",
+    "gatsby-plugin-web-font-loader": "^1.0.4",
     "normalize.css": "^8.0.1",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.1"
   },
   "devDependencies": {
     "@types/react": "^16.8.17",
+    "@types/react-helmet": "^5.0.8",
     "dotenv": "^8.0.0",
     "typescript": "^3.4.5"
   }
