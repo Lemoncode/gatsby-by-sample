@@ -4,7 +4,7 @@ import { SEO } from 'common/components';
 import { AppLayout } from 'layout';
 import { Blog } from 'pods/blog';
 
-const IndexPage: React.FunctionComponent<PageRendererProps> = props => (
+const BlogPage: React.FunctionComponent<PageRendererProps> = props => (
   <AppLayout
     pathname={props.location.pathname}
     seoComponent={
@@ -24,4 +24,4 @@ const IndexPage: React.FunctionComponent<PageRendererProps> = props => (
   </AppLayout>
 );
 
-export default IndexPage;
+export default BlogPage;

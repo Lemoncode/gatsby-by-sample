@@ -8,6 +8,7 @@ module.exports = {
     author: 'Lemoncode',
   },
   plugins: [
+    'gatsby-plugin-typescript',
     {
       resolve: 'gatsby-plugin-alias-imports',
       options: {
@@ -20,9 +21,16 @@ module.exports = {
         },
       },
     },
-    'gatsby-plugin-emotion', // To work with emotion-js and SSR
+    'gatsby-plugin-emotion',
     {
-      // To work with PWA
+      resolve: 'gatsby-plugin-web-font-loader',
+      options: {
+        google: {
+          families: ['Open Sans:300,400,800'],
+        },
+      },
+    },
+    {
       resolve: 'gatsby-plugin-manifest',
       options: {
         name: 'Gatsby by sample',
@@ -34,28 +42,10 @@ module.exports = {
         icon: 'src/core/images/favicon.png',
       },
     },
-    'gatsby-plugin-react-helmet', // To update html <head>
-    'gatsby-plugin-sharp', // Used by gatsby-transformer-sharp
-    'gatsby-plugin-typescript', // To work with Typescript
+    'gatsby-plugin-react-helmet',
+    'gatsby-transformer-sharp',
+    'gatsby-plugin-sharp',
     {
-      // To load fonts
-      resolve: 'gatsby-plugin-web-font-loader',
-      options: {
-        google: {
-          families: ['Open Sans:300,400,800'],
-        },
-      },
-    },
-    {
-      // To load contentful account
-      resolve: 'gatsby-source-contentful',
-      options: {
-        spaceId: process.env.CONTENTFUL_SPACE_ID,
-        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-      },
-    },
-    {
-      // To load images
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'images',
@@ -63,24 +53,31 @@ module.exports = {
       },
     },
     {
-      // To load mock posts
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        name: 'posts',
-        path: path.resolve(__dirname, 'src/common-app/mock-posts'),
-      },
-    },
-    // Render Contentful markdown from string to HTML
-    {
       resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [
           {
             resolve: 'gatsby-remark-images-contentful',
           },
+          {
+            resolve: 'gatsby-remark-prismjs',
+          },
         ],
       },
     },
-    'gatsby-transformer-sharp', // To process images
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'posts',
+        path: path.resolve(__dirname, 'src/common-app/mock-posts'),
+      },
+    },
+    {
+      resolve: 'gatsby-source-contentful',
+      options: {
+        spaceId: process.env.CONTENTFUL_SPACE_ID,
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+      },
+    },
   ],
 };
