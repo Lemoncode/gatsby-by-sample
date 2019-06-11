@@ -8,9 +8,29 @@ Learn Gatsby by sample, each of the samples contains a `readme.md` file that ind
 
 Usually, we are going to start with Gatsby installing the `gatsby-cli` to create initial project with some [Gatsby starter](https://www.gatsbyjs.org/docs/starters/). But this sample is the starter sample for next one.
 
-### 00 Implementation
+### 01-hello-gatsby
 
-In this sample we are going to start working with Gatsby pages, React components, images, Graphql, dynamic pages and connect it with Contentful.
+In this sample we are going to start working with Gatsby.
+
+### 02-navigation
+
+In this sample we will add some page navigation with Gatsby.
+
+### 03-handling-images
+
+In this sample we will config all necessary plugins to work with images.
+
+### 04-blog-from-md
+
+In this sample we will create a blog using local markdown files.
+
+### 05-blog-from-contentful
+
+In this sample we will create a blog using Contentful to store data.
+
+### 06-deploy-to-netlify
+
+In this sample we will deploy this app to Netlify.
 
 # About Basefactor + Lemoncode
 
