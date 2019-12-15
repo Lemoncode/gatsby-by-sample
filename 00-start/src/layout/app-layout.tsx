@@ -1,30 +1,27 @@
-import * as React from 'react';
-import { Global } from '@emotion/core';
-import { ThemeProvider } from 'emotion-theming';
-import { global } from 'core/styles';
-import { theme } from 'core/theme';
+import React from 'react';
+import { ThemeProviderComponent } from 'core/theme';
 import { AppBar, Footer } from 'common/components';
-import * as s from './app-layout.styles';
+import * as classes from './app-layout.styles';
 
-const StyledHeader = s.Header.withComponent(AppBar);
-const StyledFooter = s.Footer.withComponent(Footer);
 interface Props {
   seoComponent: React.ReactNode;
   pathname: string;
 }
 
-export const AppLayout: React.StatelessComponent<Props> = ({
-  seoComponent,
-  children,
-  pathname,
-}) => (
-  <ThemeProvider theme={theme}>
-    <Global styles={global} />
-    {seoComponent}
-    <s.Layout>
-      <StyledHeader pathname={pathname}/>
-      <s.Body>{children}</s.Body>
-      <StyledFooter />
-    </s.Layout>
-  </ThemeProvider>
-);
+export const AppLayout: React.StatelessComponent<Props> = props => {
+  const {
+    seoComponent,
+    children,
+    pathname,
+  } = props;
+  return (
+    <ThemeProviderComponent>
+      {seoComponent}
+      <div className={classes.root}>
+        <AppBar className={classes.header} pathname={pathname}/>
+        <div className={classes.body}>{children}</div>
+        <Footer className={classes.footer} />
+      </div>
+    </ThemeProviderComponent>
+  );
+}

@@ -7,6 +7,8 @@
     "sourceMap": true,
     "noImplicitAny": false,
     "jsx": "react",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "src",
     "paths": {
       "common": ["common"],
