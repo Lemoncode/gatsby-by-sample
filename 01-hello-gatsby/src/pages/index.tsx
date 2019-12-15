@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { styled } from 'core/styles';
+import React from 'react';
+import { css } from 'emotion';
 import { SEO } from 'common/components';
 
-const StyledHello = styled.div`
+const root = css`
   background-color: tomato;
   color: white;
   font-size: 4rem;
@@ -10,14 +10,22 @@ const StyledHello = styled.div`
   padding: 2rem;
 `;
 
-const IndexPage = () => (
-  <>
-    <SEO
-      title="Home"
-      keywords={['lemoncode', 'gatsby', 'gatsby by sample', 'frontent', 'ssr']}
-    />
-    <StyledHello>Hello from Gatsby</StyledHello>
-  </>
-);
+const IndexPage = () => {
+  return (
+    <>
+      <SEO
+        title="Home"
+        keywords={[
+          'lemoncode',
+          'gatsby',
+          'gatsby by sample',
+          'frontent',
+          'ssr',
+        ]}
+      />
+      <div className={root}>Hello from Gatsby</div>
+    </>
+  );
+};
 
 export default IndexPage;

@@ -4,6 +4,9 @@ import {
 } from '@material-ui/core/styles';
 
 const defaultTheme = createMuiTheme({
+  typography: {
+    fontFamily: '"Open Sans", "Roboto", "Helvetica", "Arial", sans-serif"',
+  },
   palette: {
     primary: {
       main: '#d9d900',

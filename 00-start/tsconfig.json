@@ -14,7 +14,7 @@
       "common": ["common"],
       "common-app": ["common-app"],
       "core": ["core"],
-      "layout": ["layout"],
+      "layouts": ["layouts"],
       "pods": ["pods"],
     }
   },

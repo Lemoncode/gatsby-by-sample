@@ -1,13 +1,14 @@
-import { styled } from 'core/styles';
+import { css } from 'emotion';
+import { theme } from 'core/theme';
 
-export const AppBar = styled.div`
-  && {
-    background-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.secondary};
-  }
+export const root = css`
+  background-color: ${theme.palette.primary.main};
+  color: ${theme.palette.secondary.main};
 `;
 
-export const Title = styled.h2`
-  ${({ theme }) => theme.typography.headerTitle};
+export const title = css`
+  ${theme.typography.h6.fontSize};
+  ${theme.typography.h6.fontWeight};
+  ${theme.palette.secondary.main};
   margin-left: 1rem;
 `;
