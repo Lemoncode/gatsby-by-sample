@@ -32,7 +32,11 @@ npm install
 
 ![05-required-validation](./readme-resources/05-required-validation.png)
 
+> Required: title, date, path and body.
+
 ![06-custom-validation](./readme-resources/06-custom-validation.png)
+
+> Pattern: `^[a-z0-9]+(?:-[a-z0-9]+)*$`
 
 - It's important to save changes after that:
 
@@ -44,6 +48,22 @@ npm install
 
 ![09-publishing-post](./readme-resources/09-publishing-post.png)
 
+- The `body`:
+
+````md
+# This is a markdown content from Contentful
+
+- We can insert valid markdown text, even code blocks
+
+```javascript
+import React from 'react';
+
+export const MyComponent = () => {
+  return <h1>This is a component</h1>;
+};
+```
+````
+
 - We can add `media` files in Contentful and attach it to the post:
 
 ![10-add-media](./readme-resources/10-add-media.png)
@@ -51,6 +71,14 @@ npm install
 ![11-add-logo](./readme-resources/11-add-logo.png)
 
 ![12-link-existing-media](./readme-resources/12-link-existing-media.png)
+
+- The `body`:
+
+````md
+# This is a second post
+
+But this post has an image:
+````
 
 ![13-add-media-to-content](./readme-resources/13-add-media-to-content.png)
 
@@ -65,6 +93,7 @@ npm install
 ### ./.env
 
 ```
+
 CONTENTFUL_SPACE_ID="spaceId"
 CONTENTFUL_ACCESS_TOKEN="accessToken"
 
@@ -73,7 +102,7 @@ CONTENTFUL_ACCESS_TOKEN="accessToken"
 - Now, it's time to refactor our app to connect it with Contentful:
 
 ```bash
-npm i gatsby-source-contentful gatsby-remark-images-contentful -P
+npm i gatsby-source-contentful gatsby-remark-images-contentful -D
 ```
 
 - Update `gatsby-config`:
@@ -141,7 +170,6 @@ query {
     }
   }
 }
-
 ```
 
 - Update `gatsby-node` to retrieve contentful posts:
@@ -191,11 +219,7 @@ exports.createPages = async ({ graphql, actions }) => {
 ### ./src/pods/post/post.template.tsx
 
 ```diff
-import * as React from 'react';
-import { graphql } from 'gatsby';
-import { SEO } from 'common/components';
-import { AppLayout } from 'layout';
-import { Post } from './post.component';
+...
 
 export const query = graphql`
   query($slug: String) {
@@ -216,20 +240,20 @@ export const query = graphql`
 
 ...
 
-const PostTemplate: React.StatelessComponent<Props> = ({
-  pageContext: { slug },
-  data: {
-    post: {
--     frontmatter: { title, date },
-+     title,
-+     date,
--     html,
-+     body: {
-+       childMarkdownRemark: { html },
-+     },
+  const {
+    pageContext: { slug },
+    data: {
+      post: {
+-       frontmatter: { title, date },
++       title,
++       date,
+-       html,
++       body: {
++         childMarkdownRemark: { html },
++       },
+      },
     },
-  },
-}) => {
+  } = props;
 ...
 
 ```
@@ -239,10 +263,7 @@ const PostTemplate: React.StatelessComponent<Props> = ({
 ### ./src/pods/blog/blog.component.tsx
 
 ```diff
-import * as React from 'react';
-import { Link, StaticQuery, graphql } from 'gatsby';
-import * as s from './blog.styles';
-const PostTitle = s.PostTitle.withComponent(Link);
+...
 
 const query = graphql`
   query {
@@ -261,25 +282,19 @@ const query = graphql`
   }
 `;
 
-export const Blog: React.FunctionComponent = () => (
-  <StaticQuery
-    query={query}
-    render={({ postListQuery }) => (
-      <s.Container>
-        <s.Title>Blog Page</s.Title>
-        <s.Posts>
-          {postListQuery.nodes.map(node => (
--           <PostTitle to={node.frontmatter.path} key={node.frontmatter.title}>
-+           <PostTitle to={node.path} key={node.title}>
--             {node.frontmatter.title}
-+             {node.title}
-            </PostTitle>
-          ))}
-        </s.Posts>
-      </s.Container>
-    )}
-  />
-);
+...
+
+            <Link
+              className={classes.postTitle}
+-             to={node.frontmatter.path}
++             to={node.path}
+-             key={node.frontmatter.title}
++             key={node.title}
+            >
+-             <Typography variant="body1">{node.frontmatter.title}</Typography>
++             <Typography variant="body1">{node.title}</Typography>
+            </Link>
+...
 
 ```
 
@@ -289,10 +304,13 @@ export const Blog: React.FunctionComponent = () => (
 npm start
 ```
 
+# Appendix
+
 - We can give some styles to code blocks using [PrismJS](https://github.com/PrismJS/prism):
 
 ```bash
-npm i prismjs gatsby-remark-prismjs -P
+npm i prismjs -P
+npm i gatsby-remark-prismjs -D
 ```
 
 - Update `gatsby-config`:
@@ -324,16 +342,14 @@ npm i prismjs gatsby-remark-prismjs -P
 
 - How to select a `prismjs` theme in Gatsby? We have to use it in `gatsby-browser.js` file:
 
-> NOTE: [Gatsby lifecycle](https://medium.com/narative/understanding-gatsbys-lifecycle-31c473ba2f2d)
-> [`gatsby-config.js`](https://www.gatsbyjs.org/docs/gatsby-config/): configure plugins, metadata, etc.
-> [`gatsby-node.js`](https://www.gatsbyjs.org/docs/node-apis/): create pages, update webpack or babel config, that is, add config on build time 
+> NOTE: [Gatsby lifecycle](https://medium.com/narative/understanding-gatsbys-lifecycle-31c473ba2f2d) > [`gatsby-config.js`](https://www.gatsbyjs.org/docs/gatsby-config/): configure plugins, metadata, etc.
+> [`gatsby-node.js`](https://www.gatsbyjs.org/docs/node-apis/): create pages, update webpack or babel config, that is, add config on build time
 > [`gatsby-browser.js`](https://www.gatsbyjs.org/docs/browser-apis/): add configuration after initial load, for example, route updates, service worker updates, scroll positioning.
 
 ### ./gatsby-browser.js
 
 ```javascript
 require('prismjs/themes/prism-tomorrow.css');
-
 ```
 
 # About Basefactor + Lemoncode
