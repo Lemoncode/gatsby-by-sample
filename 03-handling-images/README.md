@@ -13,22 +13,26 @@ npm install
 ### ./src/pods/home/home.component.tsx
 
 ```diff
-import * as React from 'react';
+import React from 'react';
 import { Link } from 'gatsby';
+import Typography from '@material-ui/core/Typography';
 import { routes } from 'core/routes';
-import * as s from './home.styles';
+import * as classes from './home.styles';
 + const logo = require('core/images/home-logo.png');
 
-export const Home: React.FunctionComponent = () => (
-  <s.Container>
-    <s.Title>Welcome to this website</s.Title>
--   <s.Title>(Image here)</s.Title>
-+   <img src={logo} />
-    <s.Subtitle>
-      Check out our <Link to={routes.blog}>blog</Link>
-    </s.Subtitle>
-  </s.Container>
-);
+export const Home: React.FunctionComponent = () => {
+  return (
+    <div className={classes.root}>
+      <Typography variant="h1">Welcome to this website</Typography>
+-     <Typography variant="h1">(Image here)</Typography>
++     <img src={logo} />
+      <Typography variant="h2">
+        Check out our <Link to={routes.blog}>blog</Link>
+      </Typography>
+    </div>
+  );
+};
+
 ```
 
 - Issues related with approach:
@@ -39,7 +43,8 @@ export const Home: React.FunctionComponent = () => (
 - So, we are going to use [gatsby-image](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-image) library along with `gatsby-transformer-sharp`, `gatsby-plugin-sharp` and `gatsby-source-filesystem`:
 
 ```bash
-npm i gatsby-image gatsby-transformer-sharp gatsby-plugin-sharp gatsby-source-filesystem -P
+npm i gatsby-image -P
+npm i gatsby-transformer-sharp gatsby-plugin-sharp gatsby-source-filesystem -D
 ```
 
 - Update `gatsby-config`:
@@ -73,23 +78,26 @@ module.exports = {
 ### ./src/pods/home/home.component.tsx
 
 ```diff
-import * as React from 'react';
-+ import Img from 'gatsby-image';
+import React from 'react';
++ import Image from 'gatsby-image';
 import { Link } from 'gatsby';
+import Typography from '@material-ui/core/Typography';
 import { routes } from 'core/routes';
-import * as s from './home.styles';
+import * as classes from './home.styles';
 - const logo = require('core/images/home-logo.png');
 
-export const Home: React.FunctionComponent = () => (
-  <s.Container>
-    <s.Title>Welcome to this website</s.Title>
--   <img src={logo} />
-+   <Img fixed={...} />
-    <s.Subtitle>
-      Check out our <Link to={routes.blog}>blog</Link>
-    </s.Subtitle>
-  </s.Container>
-);
+export const Home: React.FunctionComponent = () => {
+  return (
+    <div className={classes.root}>
+      <Typography variant="h1">Welcome to this website</Typography>
+-     <img src={logo} />
++     <Image fixed={...} />
+      <Typography variant="h2">
+        Check out our <Link to={routes.blog}>blog</Link>
+      </Typography>
+    </div>
+  );
+};
 
 ```
 
@@ -109,17 +117,18 @@ query {
 
 ```
 
-- Use it in `home` component. If we want to get all properties, gatsby has a special keyword or [fragments](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-image#fragments) to get it::
+- Use it in `home` component. If we want to get all properties, gatsby has a special keyword or [fragments](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-image#fragments) to get it:
 
 ### ./src/pods/home/home.component.tsx
 
 ```diff
-import * as React from 'react';
-import Img from 'gatsby-image';
+import React from 'react';
+import Image from 'gatsby-image';
 - import { Link } from 'gatsby';
 + import { Link, StaticQuery, graphql } from 'gatsby';
+import Typography from '@material-ui/core/Typography';
 import { routes } from 'core/routes';
-import * as s from './home.styles';
+import * as classes from './home.styles';
 
 + const query = graphql`
 +   query {
@@ -133,21 +142,23 @@ import * as s from './home.styles';
 +   }
 + `;
 
-export const Home: React.FunctionComponent = () => (
-+ <StaticQuery
-+   query={query}
-+   render={({ homeLogo }) => (
-      <s.Container>
-        <s.Title>Welcome to this website</s.Title>
--       <Img fixed={...} />
-+       <Img fixed={homeLogo.childImageSharp.fixed} />
-        <s.Subtitle>
-          Check out our <Link to={routes.blog}>blog</Link>
-        </s.Subtitle>
-      </s.Container>
-+   )}
-+ />
-);
+export const Home: React.FunctionComponent = () => {
+  return (
++   <StaticQuery
++     query={query}
++     render={({ homeLogo }) => (
+        <div className={classes.root}>
+          <Typography variant="h1">Welcome to this website</Typography>
+-         <Image fixed={} />
++         <Image fixed={homeLogo.childImageSharp.fixed} />
+          <Typography variant="h2">
+            Check out our <Link to={routes.blog}>blog</Link>
+          </Typography>
+        </div>
++     )}
++   />
+  );
+};
 
 ```
 
@@ -176,20 +187,12 @@ const query = graphql`
 `;
 
 export const Home: React.FunctionComponent = () => (
-  <StaticQuery
-    query={query}
-    render={({ homeLogo }) => (
-      <s.Container>
-        <s.Title>Welcome to this website</s.Title>
-+       <s.ImageContainer>
--         <Img fixed={homeLogo.childImageSharp.fixed} />
-+         <Img fluid={homeLogo.childImageSharp.fluid} />
-+       </s.ImageContainer>
-        <s.Subtitle>
-          Check out our <Link to={routes.blog}>blog</Link>
-        </s.Subtitle>
-      </s.Container>
-    )}
+...
++       <div className={classes.imageContainer}>
+-         <Image fixed={homeLogo.childImageSharp.fixed} />
++         <Image fluid={homeLogo.childImageSharp.fluid} />
++       </div>
+        ...
   />
 );
 

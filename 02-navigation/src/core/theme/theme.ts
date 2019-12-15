@@ -5,7 +5,7 @@ import {
 
 const defaultTheme = createMuiTheme({
   typography: {
-    fontFamily: '"Open Sans", "Roboto", "Helvetica", "Arial", sans-serif"',
+    fontFamily: '"Open Sans", "Roboto", "Helvetica", "Arial", sans-serif',
   },
   palette: {
     primary: {
