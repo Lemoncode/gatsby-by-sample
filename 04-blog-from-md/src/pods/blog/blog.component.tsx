@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
 import { Link, StaticQuery, graphql } from 'gatsby';
-import * as s from './blog.styles';
-const PostTitle = s.PostTitle.withComponent(Link);
+import * as classes from './blog.styles';
 
 const query = graphql`
   query {
@@ -22,16 +22,20 @@ export const Blog: React.FunctionComponent = () => (
   <StaticQuery
     query={query}
     render={({ postListQuery }) => (
-      <s.Container>
-        <s.Title>Blog Page</s.Title>
-        <s.Posts>
+      <div className={classes.root}>
+        <Typography variant="h1">Blog Page</Typography>
+        <div className={classes.posts}>
           {postListQuery.nodes.map(node => (
-            <PostTitle to={node.frontmatter.path} key={node.frontmatter.title}>
-              {node.frontmatter.title}
-            </PostTitle>
+            <Link
+              className={classes.postTitle}
+              to={node.frontmatter.path}
+              key={node.frontmatter.title}
+            >
+              <Typography variant="body1">{node.frontmatter.title}</Typography>
+            </Link>
           ))}
-        </s.Posts>
-      </s.Container>
+        </div>
+      </div>
     )}
   />
 );

@@ -1,6 +1,6 @@
-import { styled } from 'core/styles';
+import { css } from 'emotion';
 
-export const Layout = styled.div`
+export const root = css`
   height: 99.9vh;
   display: grid;
   grid-template-columns: 1fr;
@@ -13,17 +13,17 @@ export const Layout = styled.div`
   grid-row-gap: 0.5rem;
 `
 
-export const Header = styled.div`
+export const header = css`
   grid-area: header;
 `;
 
-export const Body = styled.div`
+export const body = css`
   margin-left: 10%;
   margin-right: 10%;
   grid-area: body;
 `;
 
-export const Footer = styled.div`
+export const footer = css`
   grid-area: footer;
 `;
 
