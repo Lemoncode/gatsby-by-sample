@@ -4,6 +4,7 @@ export const root = css`
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 export const posts = css`

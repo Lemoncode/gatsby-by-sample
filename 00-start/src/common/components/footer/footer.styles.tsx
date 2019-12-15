@@ -16,6 +16,6 @@ export const line = css`
 
 export const footer = css`
   padding-top: 1rem;
-  ${theme.typography.subtitle2.fontSize};
-  ${theme.palette.secondary.main};
+  font-size: ${theme.typography.subtitle2.fontSize};
+  color: ${theme.palette.secondary.main};
 `;

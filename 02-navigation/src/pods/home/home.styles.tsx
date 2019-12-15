@@ -1,6 +1,6 @@
-import { styled } from 'core/styles';
+import { css } from 'emotion';
 
-export const Container = styled.div`
+export const root = css`
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -8,14 +8,6 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-export const Title = styled.h1`
-  ${({ theme }) => theme.typography.title};
-`;
-
-export const Subtitle = styled.h2`
-  ${({ theme }) => theme.typography.subtitle};
-`;
-
-export const ImageContainer = styled.div`
+export const imageContainer = css`
   width: 50%;
-`
+`;

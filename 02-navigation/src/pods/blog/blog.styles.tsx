@@ -1,23 +1,20 @@
-import { styled } from 'core/styles';
+import { css } from 'emotion';
 
-export const Container = styled.div`
+export const root = css`
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
-export const Title = styled.h1`
-  ${({ theme }) => theme.typography.title};
-`;
-
-export const Posts = styled.div`
+export const posts = css`
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 3rem;
   width: 100%;
-`
+`;
 
-export const PostTitle = styled.div`
+export const postTitle = css`
   margin-top: 3rem;
-`
+`;

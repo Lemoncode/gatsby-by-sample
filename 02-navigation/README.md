@@ -13,21 +13,28 @@ npm install
 ### ./src/pages/blog.tsx
 
 ```javascript
-import * as React from 'react';
+import React from 'react';
 import { SEO } from 'common/components';
 
-const BlogPage = () => (
-  <>
-    <SEO
-      title="Blog"
-      keywords={['lemoncode', 'gatsby', 'gatsby by sample', 'frontent', 'ssr']}
-    />
-    <div>This is a blog page</div>
-  </>
-);
+const BlogPage = () => {
+  return (
+    <>
+      <SEO
+        title="Blog"
+        keywords={[
+          'lemoncode',
+          'gatsby',
+          'gatsby by sample',
+          'frontent',
+          'ssr',
+        ]}
+      />
+      <div>This is a blog page</div>
+    </>
+  );
+};
 
 export default BlogPage;
-
 ```
 
 - Run app and navigate to `/blog`:
@@ -41,21 +48,20 @@ npm start
 ### ./src/pages/index.ts
 
 ```diff
-import * as React from 'react';
+import React from 'react';
 + import { Link } from 'gatsby';
-import { styled } from 'core/styles';
+import { css } from 'emotion';
 import { SEO } from 'common/components';
 
 ...
 const IndexPage = () => (
   <>
     ...
-    <StyledHello>Hello from Gatsby</StyledHello>
+    <div className={root}>Hello from Gatsby</div>
 +   <Link to="/blog">Navigate to blog</Link>
   </>
 );
-
-export default IndexPage;
+...
 
 ```
 
@@ -64,26 +70,32 @@ export default IndexPage;
 ### ./src/pages/blog.tsx
 
 ```diff
-import * as React from 'react';
+import React from 'react';
 + import { navigate } from 'gatsby';
 import { SEO } from 'common/components';
 
+const BlogPage = () => {
 + const handleNavigate = () => {
 +   navigate('/');
 + };
 
-const BlogPage = () => (
-  <>
-    <SEO
-      title="Blog"
-      keywords={['lemoncode', 'gatsby', 'gatsby by sample', 'frontent', 'ssr']}
-    />
-    <div>This is a blog page</div>
-+   <button onClick={handleNavigate}>Navigate using button</button>
-  </>
-);
-
-export default BlogPage;
+  return (
+    <>
+      <SEO
+        title="Blog"
+        keywords={[
+          'lemoncode',
+          'gatsby',
+          'gatsby by sample',
+          'frontent',
+          'ssr',
+        ]}
+      />
+      <div>This is a blog page</div>
++     <button onClick={handleNavigate}>Navigate using button</button>
+    </>
+  );
+};
 
 ```
 
@@ -92,15 +104,15 @@ export default BlogPage;
 ### ./src/pages/index.tsx
 
 ```diff
-import * as React from 'react';
+import React from 'react';
 - import { Link } from 'gatsby';
-- import { styled } from 'core/styles';
+- import { css } from 'emotion';
 + import { PageRendererProps } from 'gatsby';
 import { SEO } from 'common/components';
-+ import { AppLayout } from 'layout';
++ import { AppLayout } from 'layouts';
 + import { Home } from 'pods/home';
 
-- const StyledHello = styled.div`
+- const root = css`
 -   background-color: tomato;
 -   color: white;
 -   font-size: 4rem;
@@ -108,26 +120,35 @@ import { SEO } from 'common/components';
 -   padding: 2rem;
 - `;
 
-- const IndexPage = () => (
-+ const IndexPage: React.FunctionComponent<PageRendererProps> = props => (
--  <>
-+   <AppLayout
-+     pathname={props.location.pathname}
-+     seoComponent={
-        <SEO
-          title="Home"
-          keywords={['lemoncode', 'gatsby', 'gatsby by sample', 'frontent', 'ssr']}
-        />
--     <StyledHello>Hello from Gatsby</StyledHello>
--     <Link to="/blog">Navigate to blog</Link>
--   </>
-+     }
-+   >
-+     <Home />
-+   </AppLayout>
-);
+- const IndexPage = () => {
++ const IndexPage: React.FunctionComponent<PageRendererProps> = props => {
++   const { location } = props;
+    return (
+-     <>
++     <AppLayout
++       pathname={location.pathname}
++       seoComponent={
+          <SEO
+            title="Home"
+            keywords={[
+              'lemoncode',
+              'gatsby',
+              'gatsby by sample',
+              'frontent',
+              'ssr',
+            ]}
+          />
++       }
++     >
+-       <div className={root}>Hello from Gatsby</div>
+-       <Link to="/blog">Navigate to blog</Link>
++       <Home />
+-     </>
++     </AppLayout>
+    );
+  };
 
-export default IndexPage;
+...
 
 ```
 
@@ -136,43 +157,46 @@ export default IndexPage;
 ### ./src/pages/blog.tsx
 
 ```diff
-import * as React from 'react';
+import React from 'react';
 - import { navigate } from 'gatsby';
 + import { PageRendererProps } from 'gatsby';
 import { SEO } from 'common/components';
-+ import { AppLayout } from 'layout';
++ import { AppLayout } from 'layouts';
 + import { Blog } from 'pods/blog';
 
-- const handleNavigate = () => {
--   navigate('/');
-- };
+- const BlogPage = () => {
++ const BlogPage: React.FunctionComponent<PageRendererProps> = props => {
++   const { location } = props;
+-   const handleNavigate = () => {
+-     navigate('/');
+-   };
 
-- const BlogPage = () => (
-+ const BlogPage: React.FunctionComponent<PageRendererProps> = props => (
--   <>
-+   <AppLayout
-+     pathname={props.location.pathname}
-+     seoComponent={
-        <SEO
-          title="Blog"
-          keywords={[
-            'lemoncode',
-            'gatsby',
-            'gatsby by sample',
-            'frontent',
-            'ssr',
-          ]}
-        />
--     <div>This is a blog page</div>
--     <button onClick={handleNavigate}>Navigate using button</button>
--   </>
-+     }
-+   >
-+     <Blog />
-+   </AppLayout>
-);
+    return (
+-     <>
++     <AppLayout
++       pathname={location.pathname}
++       seoComponent={
+          <SEO
+            title="Blog"
+            keywords={[
+              'lemoncode',
+              'gatsby',
+              'gatsby by sample',
+              'frontent',
+              'ssr',
+            ]}
+          />
++       }
++     >
+-       <div>This is a blog page</div>
+-       <button onClick={handleNavigate}>Navigate using button</button>
++       <Blog />
+-     </>
++     </AppLayout>
+    );
+  };
 
-export default BlogPage;
+...
 
 ```
 

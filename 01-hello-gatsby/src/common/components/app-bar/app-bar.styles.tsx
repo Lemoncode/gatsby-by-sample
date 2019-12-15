@@ -7,8 +7,8 @@ export const root = css`
 `;
 
 export const title = css`
-  ${theme.typography.h6.fontSize};
-  ${theme.typography.h6.fontWeight};
-  ${theme.palette.secondary.main};
+  font-size: ${theme.typography.h6.fontSize};
+  font-weight: ${theme.typography.h6.fontWeight};
+  color: ${theme.palette.secondary.main};
   margin-left: 1rem;
 `;
