@@ -7,12 +7,14 @@
     "sourceMap": true,
     "noImplicitAny": false,
     "jsx": "react",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "src",
     "paths": {
       "common": ["common"],
       "common-app": ["common-app"],
       "core": ["core"],
-      "layout": ["layout"],
+      "layouts": ["layouts"],
       "pods": ["pods"],
     }
   },

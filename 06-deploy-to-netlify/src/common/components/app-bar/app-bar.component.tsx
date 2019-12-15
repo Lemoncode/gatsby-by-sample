@@ -1,17 +1,16 @@
-import * as React from 'react';
+import React from 'react';
+import { cx } from 'emotion';
 import { navigate } from 'gatsby';
 import Bar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { RootRef } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
-import * as s from './app-bar.styles';
 import { getPageName } from './app-bar.business';
 import { routes } from 'core/routes';
-
-const AppBarStyled = s.AppBar.withComponent(Bar);
+import * as classes from './app-bar.styles';
 
 interface Props {
   className?: string;
@@ -19,6 +18,7 @@ interface Props {
 }
 
 export const AppBar: React.FunctionComponent<Props> = props => {
+  const { pathname, className } = props;
   const [isOpen, setOpen] = React.useState(false);
   const [element, setElement] = React.useState(null);
 
@@ -38,7 +38,7 @@ export const AppBar: React.FunctionComponent<Props> = props => {
   };
 
   return (
-    <AppBarStyled className={props.className} position="static">
+    <Bar className={cx(classes.root, className)} position="static">
       <Toolbar variant="dense">
         <IconButton
           aria-label="Open drawer"
@@ -51,8 +51,10 @@ export const AppBar: React.FunctionComponent<Props> = props => {
           <MenuItem onClick={navigateTo(routes.home)}>Home</MenuItem>
           <MenuItem onClick={navigateTo(routes.blog)}>Blog</MenuItem>
         </Menu>
-        <s.Title>{getPageName(props.pathname)}</s.Title>
+        <Typography variant="h2" className={classes.title}>
+          {getPageName(pathname)}
+        </Typography>
       </Toolbar>
-    </AppBarStyled>
+    </Bar>
   );
 };

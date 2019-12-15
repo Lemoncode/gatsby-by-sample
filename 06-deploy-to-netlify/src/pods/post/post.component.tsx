@@ -1,5 +1,6 @@
-import * as React from 'react';
-import * as s from './post.styles';
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import * as classes from './post.styles';
 
 interface Props {
   title: string;
@@ -7,10 +8,17 @@ interface Props {
   body;
 }
 
-export const Post: React.FunctionComponent<Props> = ({ title, date, body }) => (
-  <s.Container>
-    <s.Title>{title}</s.Title>
-    <s.Subtitle>{date}</s.Subtitle>
-    <s.Body dangerouslySetInnerHTML={{ __html: body }} />
-  </s.Container>
-);
+export const Post: React.FunctionComponent<Props> = props => {
+  const { title, date, body } = props;
+
+  return (
+    <div className={classes.root}>
+      <Typography variant="h2">{title}</Typography>
+      <Typography variant="subtitle1">{date}</Typography>
+      <div
+        className={classes.body}
+        dangerouslySetInnerHTML={{ __html: body }}
+      />
+    </div>
+  );
+};
