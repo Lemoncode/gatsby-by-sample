@@ -1,13 +1,15 @@
-import * as React from 'react';
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
 import { Link } from 'gatsby';
-import * as s from './blog.styles';
-const PostTitle = s.PostTitle.withComponent(Link);
+import * as classes from './blog.styles';
 
 export const Blog: React.FunctionComponent = () => (
-  <s.Container>
-    <s.Title>Blog Page</s.Title>
-    <s.Posts>
-      <PostTitle to="/my-post">My post</PostTitle>
-    </s.Posts>
-  </s.Container>
+  <div className={classes.root}>
+    <Typography variant="h1">Blog Page</Typography>
+    <div className={classes.posts}>
+      <Link className={classes.postTitle} to="/my-post">
+        My post
+      </Link>
+    </div>
+  </div>
 );

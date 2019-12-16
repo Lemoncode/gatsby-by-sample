@@ -1,7 +1,7 @@
-import * as React from 'react';
+import React from 'react';
 import { graphql } from 'gatsby';
 import { SEO } from 'common/components';
-import { AppLayout } from 'layout';
+import { AppLayout } from 'layouts';
 import { Post } from './post.component';
 
 export const query = graphql`
@@ -25,18 +25,20 @@ interface Props {
   };
 }
 
-const PostTemplate: React.StatelessComponent<Props> = ({
-  pageContext: { slug },
-  data: {
-    post: {
-      title,
-      date,
-      body: {
-        childMarkdownRemark: { html },
+const PostTemplate: React.FunctionComponent<Props> = props => {
+  const {
+    pageContext: { slug },
+    data: {
+      post: {
+        title,
+        date,
+        body: {
+          childMarkdownRemark: { html },
+        },
       },
     },
-  },
-}) => {
+  } = props;
+
   return (
     <AppLayout
       pathname={slug}

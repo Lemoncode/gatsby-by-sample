@@ -1,3 +1,3 @@
 export * from './app-bar';
 export * from './footer';
-export * from './seo';
+export * from './seo.component';

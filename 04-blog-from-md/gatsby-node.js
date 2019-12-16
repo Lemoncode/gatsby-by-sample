@@ -19,7 +19,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
   postListQuery.nodes.forEach(node => {
     const { path } = node.frontmatter;
-    if(path) {
+    if (path) {
       createPage({
         path,
         component: resolve(__dirname, 'src/pods/post/post.template.tsx'),

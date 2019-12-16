@@ -13,18 +13,20 @@ npm install
 ### ./src/pods/blog/blog.component.tsx
 
 ```javascript
-import * as React from 'react';
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
 import { Link } from 'gatsby';
-import * as s from './blog.styles';
-const PostTitle = s.PostTitle.withComponent(Link);
+import * as classes from './blog.styles';
 
 export const Blog: React.FunctionComponent = () => (
-  <s.Container>
-    <s.Title>Blog Page</s.Title>
-    <s.Posts>
-      <PostTitle to="/my-post">My post</PostTitle>
-    </s.Posts>
-  </s.Container>
+  <div className={classes.root}>
+    <Typography variant="h1">Blog Page</Typography>
+    <div className={classes.posts}>
+      <Link className={classes.postTitle} to="/my-post">
+        My post
+      </Link>
+    </div>
+  </div>
 );
 
 ```
@@ -32,7 +34,7 @@ export const Blog: React.FunctionComponent = () => (
 - Instead of that, we want to use `common-app/mock-posts` files to create and style the `blog/post` components using local files and then move to cloud approach. That is, using a progressive web design:
 
 ```bash
-npm i gatsby-transformer-remark -P
+npm i gatsby-transformer-remark -D
 ```
 
 ### ./gatsby-config.js
@@ -88,11 +90,11 @@ allMarkdownRemark(
 ### ./src/pods/blog/blog.component.tsx
 
 ```diff
-import * as React from 'react';
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
 - import { Link } from 'gatsby';
 + import { Link, StaticQuery, graphql } from 'gatsby';
-import * as s from './blog.styles';
-const PostTitle = s.PostTitle.withComponent(Link);
+import * as classes from './blog.styles';
 
 + const query = graphql`
 +   query {
@@ -113,17 +115,23 @@ export const Blog: React.FunctionComponent = () => (
 + <StaticQuery
 +   query={query}
 +   render={({ postListQuery }) => (
-      <s.Container>
-        <s.Title>Blog Page</s.Title>
-        <s.Posts>
+      <div className={classes.root}>
+        <Typography variant="h1">Blog Page</Typography>
+        <div className={classes.posts}>
 +         {postListQuery.nodes.map(node => (
--           <PostTitle to="/my-post">My post</PostTitle>
-+           <PostTitle to={node.frontmatter.path} key={node.frontmatter.title}>
-+             {node.frontmatter.title}
-+           </PostTitle>
+-           <Link className={classes.postTitle} to="/my-post">
+-             My post
+-           </Link>
++           <Link
++             className={classes.postTitle}
++             to={node.frontmatter.path}
++             key={node.frontmatter.title}
++           >
++             <Typography variant="body1">{node.frontmatter.title}</Typography>
++           </Link>
 +         ))}
-        </s.Posts>
-      </s.Container>
+        </div>
+      </div>
 +   )}
 + />
 );
@@ -132,41 +140,39 @@ export const Blog: React.FunctionComponent = () => (
 
 - Now, it's time create the post's page, dynamically. Let's create a `post.component`:
 
-### ./src/pods/post/post.styles.tsx
+### ./src/pods/post/post.styles.ts
 
 ```javascript
-import { styled } from 'core/styles';
+import { css } from 'emotion';
+import { theme } from 'core/theme';
 
-export const Container = styled.div`
+export const root = css`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  & > :nth-child(n) {
+    margin-top: 1rem;
+  }
 `;
 
-export const Title = styled.h1`
-  ${({ theme }) => theme.typography.title};
-`;
-
-export const Subtitle = styled.h2`
-  ${({ theme }) => theme.typography.subtitle};
-`;
-
-export const Body = styled.div`
+export const body = css`
   display: flex;
   flex-direction: column;
   align-items: center;
   max-width: 100%;
   margin-top: 3rem;
-`
+  font-size: 2rem;
+`;
 
 ```
 
 ### ./src/pods/post/post.component.tsx
 
 ```javascript
-import * as React from 'react';
-import * as s from './post.styles';
+import React from 'react';
+import Typography from '@material-ui/core/Typography';
+import * as classes from './post.styles';
 
 interface Props {
   title: string;
@@ -174,13 +180,20 @@ interface Props {
   body;
 }
 
-export const Post: React.FunctionComponent<Props> = ({ title, date, body }) => (
-  <s.Container>
-    <s.Title>{title}</s.Title>
-    <s.Subtitle>{date}</s.Subtitle>
-    <s.Body dangerouslySetInnerHTML={{ __html: body }} />
-  </s.Container>
-);
+export const Post: React.FunctionComponent<Props> = props => {
+  const { title, date, body } = props;
+
+  return (
+    <div className={classes.root}>
+      <Typography variant="h2">{title}</Typography>
+      <Typography variant="subtitle1">{date}</Typography>
+      <div
+        className={classes.body}
+        dangerouslySetInnerHTML={{ __html: body }}
+      />
+    </div>
+  );
+};
 
 ```
 
@@ -245,10 +258,10 @@ exports.createPages = async ({ graphql, actions }) => {
 > NOTE: Difference between [Static Query and page query](https://www.gatsbyjs.org/docs/static-query/#how-staticquery-differs-from-page-query)
 
 ```javascript
-import * as React from 'react';
+import React from 'react';
 import { graphql } from 'gatsby';
 import { SEO } from 'common/components';
-import { AppLayout } from 'layout';
+import { AppLayout } from 'layouts';
 import { Post } from './post.component';
 
 export const query = graphql`
@@ -270,15 +283,17 @@ interface Props {
   };
 }
 
-const PostTemplate: React.StatelessComponent<Props> = ({
-  pageContext: { slug },
-  data: {
-    post: {
-      frontmatter: { title, date },
-      html,
+const PostTemplate: React.FunctionComponent<Props> = props => {
+  const {
+    pageContext: { slug },
+    data: {
+      post: {
+        frontmatter: { title, date },
+        html,
+      },
     },
-  },
-}) => {
+  } = props;
+
   return (
     <AppLayout
       pathname={slug}

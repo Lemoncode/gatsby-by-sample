@@ -37,24 +37,31 @@ npm i gatsby -P
 ### ./src/pages/index.jsx
 
 ```javascript
-import * as React from 'react';
+import React from 'react';
 
 const IndexPage = () => <div>Hello from Gatsby</div>;
 
 export default IndexPage;
 ```
 
+- Run `start`:
+
+```bash
+npm start
+
+```
+
 - It's not bad but we would like to work with TypeScript, import aliases, CSS in JS, etc. What do we need? We need to install plugins:
 
 ```bash
-npm i gatsby-plugin-typescript gatsby-plugin-alias-imports gatsby-plugin-emotion gatsby-plugin-web-font-loader gatsby-plugin-manifest -P
+npm i gatsby-plugin-typescript gatsby-plugin-alias-imports gatsby-plugin-web-font-loader gatsby-plugin-manifest babel-preset-gatsby babel-plugin-emotion -D
 ```
 
 - We have to create a file [gatsby-config](https://www.gatsbyjs.org/docs/gatsby-config/) to configure all these plugins:
 
-### ./gatsby-config.js
-
 > NOTE: Search a [Gatsby plugin](https://www.gatsbyjs.org/plugins)
+
+### ./gatsby-config.js
 
 ```javascript
 const path = require('path');
@@ -69,12 +76,11 @@ module.exports = {
           common: path.resolve(__dirname, 'src/common'),
           'common-app': path.resolve(__dirname, 'src/common-app'),
           core: path.resolve(__dirname, 'src/core'),
-          layout: path.resolve(__dirname, 'src/layout'),
+          layouts: path.resolve(__dirname, 'src/layouts'),
           pods: path.resolve(__dirname, 'src/pods'),
         },
       },
     },
-    'gatsby-plugin-emotion',
     {
       resolve: 'gatsby-plugin-web-font-loader',
       options: {
@@ -100,15 +106,27 @@ module.exports = {
 
 ```
 
+- Add custom `.babelrc` file:
+
+### ./.babelrc
+
+```json
+{
+  "presets": ["babel-preset-gatsby"],
+  "plugins": ["emotion"]
+}
+
+```
+
 - Now, we can rename the index page by `index.tsx`.
 
 ### ./src/index.tsx
 
 ```diff
-import * as React from 'react';
-+ import { styled } from 'core/styles';
+import React from 'react';
++ import { css } from 'emotion';
 
-+ const StyledHello = styled.div`
++ const root = css`
 +   background-color: tomato;
 +   color: white;
 +   font-size: 4rem;
@@ -117,7 +135,7 @@ import * as React from 'react';
 + `;
 
 - const IndexPage = () => <div>Hello from Gatsby</div>;
-+ const IndexPage = () => <StyledHello>Hello from Gatsby</StyledHello>;
++ const IndexPage = () => <div className={root}>Hello from Gatsby</div>;
 
 export default IndexPage;
 
@@ -147,8 +165,8 @@ module.exports = {
 - How can we inject it to Gatsby pages? We are going to use [react-helmet](https://github.com/nfl/react-helmet):
 
 ```bash
-npm i react-helmet gatsby-plugin-react-helmet -P
-npm i @types/react-helmet -D
+npm i react-helmet -P
+npm i @types/react-helmet gatsby-plugin-react-helmet -D
 ```
 
 - Configure plugin:
@@ -179,12 +197,12 @@ npm i @types/react-helmet -D
 
 - We want to add on each page the `siteMetadata` and some meta tags that belong to each page:
 
-### ./src/common/components/seo.tsx
+### ./src/common/components/seo.component.tsx
 
 > Open GraphQL Server in `http://localhost:8000/___graphql`
 
 ```javascript
-import * as React from 'react';
+import React from 'react';
 import Helmet from 'react-helmet';
 import { StaticQuery, graphql } from 'gatsby';
 
@@ -196,80 +214,7 @@ interface Props {
   keywords?: string[];
 }
 
-export const SEO: React.StatelessComponent<Props> = ({
-  description,
-  lang,
-  meta,
-  keywords,
-  title,
-}) => (
-  <StaticQuery
-    query={detailsQuery}
-    render={data => {
-      const metaDescription = description || data.site.siteMetadata.description;
-      return (
-        <Helmet
-          htmlAttributes={{
-            lang,
-          }}
-          title={title}
-          titleTemplate={`%s | ${data.site.siteMetadata.title}`}
-          meta={[
-            {
-              name: 'description',
-              content: metaDescription,
-            },
-            {
-              property: 'og:title',
-              content: title,
-            },
-            {
-              property: 'og:description',
-              content: metaDescription,
-            },
-            {
-              property: 'og:type',
-              content: 'website',
-            },
-            {
-              name: 'twitter:card',
-              content: 'summary',
-            },
-            {
-              name: 'twitter:creator',
-              content: data.site.siteMetadata.author,
-            },
-            {
-              name: 'twitter:title',
-              content: title,
-            },
-            {
-              name: 'twitter:description',
-              content: metaDescription,
-            },
-          ]
-            .concat(
-              keywords.length > 0
-                ? {
-                    name: 'keywords',
-                    content: keywords.join(', '),
-                  }
-                : []
-            )
-            .concat(meta)}
-        />
-      );
-    }}
-  />
-);
-
-SEO.defaultProps = {
-  lang: 'en',
-  meta: [],
-  keywords: [],
-};
-
-const detailsQuery = graphql`
+const query = graphql`
   query DefaultSEOQuery {
     site {
       siteMetadata {
@@ -281,6 +226,78 @@ const detailsQuery = graphql`
   }
 `;
 
+export const SEO: React.StatelessComponent<Props> = props => {
+  const { description, lang, meta, keywords, title } = props;
+
+  return (
+    <StaticQuery
+      query={query}
+      render={data => {
+        const metaDescription =
+          description || data.site.siteMetadata.description;
+        return (
+          <Helmet
+            htmlAttributes={{
+              lang,
+            }}
+            title={title}
+            titleTemplate={`%s | ${data.site.siteMetadata.title}`}
+            meta={[
+              {
+                name: 'description',
+                content: metaDescription,
+              },
+              {
+                property: 'og:title',
+                content: title,
+              },
+              {
+                property: 'og:description',
+                content: metaDescription,
+              },
+              {
+                property: 'og:type',
+                content: 'website',
+              },
+              {
+                name: 'twitter:card',
+                content: 'summary',
+              },
+              {
+                name: 'twitter:creator',
+                content: data.site.siteMetadata.author,
+              },
+              {
+                name: 'twitter:title',
+                content: title,
+              },
+              {
+                name: 'twitter:description',
+                content: metaDescription,
+              },
+            ]
+              .concat(
+                keywords.length > 0
+                  ? {
+                      name: 'keywords',
+                      content: keywords.join(', '),
+                    }
+                  : []
+              )
+              .concat(meta)}
+          />
+        );
+      }}
+    />
+  );
+};
+
+SEO.defaultProps = {
+  lang: 'en',
+  meta: [],
+  keywords: [],
+};
+
 ```
 
 - Update barrel file:
@@ -290,7 +307,7 @@ const detailsQuery = graphql`
 ```diff
 export * from './app-bar';
 export * from './footer';
-+ export * from './seo';
++ export * from './seo.component';
 
 ```
 
@@ -300,30 +317,31 @@ export * from './footer';
 ### ./src/pages/index.tsx
 
 ```diff
-import * as React from 'react';
-import { styled } from 'core/styles';
+import React from 'react';
+import { css } from 'emotion';
 + import { SEO } from 'common/components';
 
-const StyledHello = styled.div`
-  background-color: tomato;
-  color: white;
-  font-size: 4rem;
-  font-family: 'Open Sans';
-  padding: 2rem;
-`;
+...
 
-- const IndexPage = () => <StyledHello>Hello from Gatsby</StyledHello>;
-+ const IndexPage = () => (
-+   <>
-+     <SEO
-+       title="Home"
-+       keywords={['lemoncode', 'gatsby', 'gatsby by sample', 'frontent', 'ssr']}
-+     />
-      <StyledHello>Hello from Gatsby</StyledHello>
-+   </>
-+ );
-
-export default IndexPage;
+- const IndexPage = () => <div className={root}>Hello from Gatsby</div>;
++ const IndexPage = () => {
++   return (
++     <>
++       <SEO
++         title="Home"
++         keywords={[
++           'lemoncode',
++           'gatsby',
++           'gatsby by sample',
++           'frontent',
++           'ssr',
++         ]}
++       />
++       <div className={root}>Hello from Gatsby</div>
++     </>
++   );
++ };
+...
 
 ```
 

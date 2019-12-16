@@ -16,12 +16,11 @@ module.exports = {
           common: path.resolve(__dirname, 'src/common'),
           'common-app': path.resolve(__dirname, 'src/common-app'),
           core: path.resolve(__dirname, 'src/core'),
-          layout: path.resolve(__dirname, 'src/layout'),
+          layouts: path.resolve(__dirname, 'src/layouts'),
           pods: path.resolve(__dirname, 'src/pods'),
         },
       },
     },
-    'gatsby-plugin-emotion',
     {
       resolve: 'gatsby-plugin-web-font-loader',
       options: {
