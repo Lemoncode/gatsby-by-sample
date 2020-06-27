@@ -103,7 +103,6 @@ module.exports = {
     },
   ],
 };
-
 ```
 
 - Add custom `.babelrc` file:
@@ -115,7 +114,6 @@ module.exports = {
   "presets": ["babel-preset-gatsby"],
   "plugins": ["emotion"]
 }
-
 ```
 
 - Now, we can rename the index page by `index.tsx`.
@@ -203,7 +201,7 @@ npm i @types/react-helmet gatsby-plugin-react-helmet -D
 
 ```javascript
 import React from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { StaticQuery, graphql } from 'gatsby';
 
 interface Props {
@@ -226,13 +224,13 @@ const query = graphql`
   }
 `;
 
-export const SEO: React.StatelessComponent<Props> = props => {
+export const SEO: React.StatelessComponent<Props> = (props) => {
   const { description, lang, meta, keywords, title } = props;
 
   return (
     <StaticQuery
       query={query}
-      render={data => {
+      render={(data) => {
         const metaDescription =
           description || data.site.siteMetadata.description;
         return (
@@ -297,7 +295,6 @@ SEO.defaultProps = {
   meta: [],
   keywords: [],
 };
-
 ```
 
 - Update barrel file:
@@ -310,7 +307,6 @@ export * from './footer';
 + export * from './seo.component';
 
 ```
-
 
 - Update `index` page:
 
