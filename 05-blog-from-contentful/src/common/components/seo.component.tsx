@@ -1,5 +1,5 @@
 import React from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { StaticQuery, graphql } from 'gatsby';
 
 interface Props {
@@ -22,13 +22,13 @@ const query = graphql`
   }
 `;
 
-export const SEO: React.StatelessComponent<Props> = props => {
+export const SEO: React.StatelessComponent<Props> = (props) => {
   const { description, lang, meta, keywords, title } = props;
 
   return (
     <StaticQuery
       query={query}
-      render={data => {
+      render={(data) => {
         const metaDescription =
           description || data.site.siteMetadata.description;
         return (

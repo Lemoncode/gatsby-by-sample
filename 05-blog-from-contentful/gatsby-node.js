@@ -15,7 +15,7 @@ exports.createPages = async ({ graphql, actions }) => {
   const { data } = await graphql(query);
   const { postListQuery } = data;
 
-  postListQuery.nodes.forEach(node => {
+  postListQuery.nodes.forEach((node) => {
     const { path } = node;
     if (path) {
       createPage({

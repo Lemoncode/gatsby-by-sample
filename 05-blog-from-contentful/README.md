@@ -78,6 +78,7 @@ export const MyComponent = () => {
 # This is a second post
 
 But this post has an image:
+
 ````
 
 ![13-add-media-to-content](./readme-resources/13-add-media-to-content.png)
@@ -94,8 +95,8 @@ But this post has an image:
 
 ```
 
-CONTENTFUL_SPACE_ID="spaceId"
-CONTENTFUL_ACCESS_TOKEN="accessToken"
+CONTENTFUL_SPACE_ID=value
+CONTENTFUL_ACCESS_TOKEN=value
 
 ```
 
@@ -287,7 +288,7 @@ const query = graphql`
             <Link
               className={classes.postTitle}
 -             to={node.frontmatter.path}
-+             to={node.path}
++             to={`/${node.path}`}
 -             key={node.frontmatter.title}
 +             key={node.title}
             >

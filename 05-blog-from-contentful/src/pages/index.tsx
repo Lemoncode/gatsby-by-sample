@@ -4,7 +4,7 @@ import { SEO } from 'common/components';
 import { AppLayout } from 'layouts';
 import { Home } from 'pods/home';
 
-const IndexPage: React.FunctionComponent<PageRendererProps> = props => {
+const IndexPage: React.FunctionComponent<PageRendererProps> = (props) => {
   const { location } = props;
   return (
     <AppLayout
