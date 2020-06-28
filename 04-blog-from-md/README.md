@@ -18,16 +18,18 @@ import Typography from '@material-ui/core/Typography';
 import { Link } from 'gatsby';
 import * as classes from './blog.styles';
 
-export const Blog: React.FunctionComponent = () => (
-  <div className={classes.root}>
-    <Typography variant="h1">Blog Page</Typography>
-    <div className={classes.posts}>
-      <Link className={classes.postTitle} to="/my-post">
-        My post
-      </Link>
+export const Blog: React.FunctionComponent = () => {
+  return (
+    <div className={classes.root}>
+      <Typography variant="h1">Blog Page</Typography>
+      <div className={classes.posts}>
+        <Link className={classes.postTitle} to="/my-post">
+          My post
+        </Link>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 ```
 
@@ -93,7 +95,7 @@ allMarkdownRemark(
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 - import { Link } from 'gatsby';
-+ import { Link, StaticQuery, graphql } from 'gatsby';
++ import { Link, useStaticQuery, graphql } from 'gatsby';
 import * as classes from './blog.styles';
 
 + const query = graphql`
@@ -111,29 +113,27 @@ import * as classes from './blog.styles';
 +   }
 + `;
 
-export const Blog: React.FunctionComponent = () => (
-+ <StaticQuery
-+   query={query}
-+   render={({ postListQuery }) => (
-      <div className={classes.root}>
-        <Typography variant="h1">Blog Page</Typography>
-        <div className={classes.posts}>
-+         {postListQuery.nodes.map(node => (
--           <Link className={classes.postTitle} to="/my-post">
--             My post
--           </Link>
-+           <Link
-+             className={classes.postTitle}
-+             to={node.frontmatter.path}
-+             key={node.frontmatter.title}
-+           >
-+             <Typography variant="body1">{node.frontmatter.title}</Typography>
-+           </Link>
-+         ))}
-        </div>
+export const Blog: React.FunctionComponent = () => {
++ const { postListQuery } = useStaticQuery(query);
+
+  return (
+    <div className={classes.root}>
+      <Typography variant="h1">Blog Page</Typography>
+      <div className={classes.posts}>
++       {postListQuery.nodes.map(node => (
+-         <Link className={classes.postTitle} to="/my-post">
+-           My post
+-         </Link>
++         <Link
++           className={classes.postTitle}
++           to={node.frontmatter.path}
++           key={node.frontmatter.title}
++         >
++           <Typography variant="body1">{node.frontmatter.title}</Typography>
++         </Link>
++       ))}
       </div>
-+   )}
-+ />
+    </div>
 );
 
 ```
@@ -179,7 +179,7 @@ interface Props {
   body;
 }
 
-export const Post: React.FunctionComponent<Props> = props => {
+export const Post: React.FunctionComponent<Props> = (props) => {
   const { title, date, body } = props;
 
   return (

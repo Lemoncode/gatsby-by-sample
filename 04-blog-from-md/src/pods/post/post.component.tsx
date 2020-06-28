@@ -8,7 +8,7 @@ interface Props {
   body;
 }
 
-export const Post: React.FunctionComponent<Props> = props => {
+export const Post: React.FunctionComponent<Props> = (props) => {
   const { title, date, body } = props;
 
   return (
