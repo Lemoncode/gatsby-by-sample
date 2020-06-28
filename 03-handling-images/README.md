@@ -125,7 +125,7 @@ query {
 import React from 'react';
 import Image from 'gatsby-image';
 - import { Link } from 'gatsby';
-+ import { Link, StaticQuery, graphql } from 'gatsby';
++ import { Link, useStaticQuery, graphql } from 'gatsby';
 import Typography from '@material-ui/core/Typography';
 import { routes } from 'core/routes';
 import * as classes from './home.styles';
@@ -143,20 +143,17 @@ import * as classes from './home.styles';
 + `;
 
 export const Home: React.FunctionComponent = () => {
++ const { homeLogo } = useStaticQuery(query);
+
   return (
-+   <StaticQuery
-+     query={query}
-+     render={({ homeLogo }) => (
-        <div className={classes.root}>
-          <Typography variant="h1">Welcome to this website</Typography>
--         <Image fixed={} />
-+         <Image fixed={homeLogo.childImageSharp.fixed} />
-          <Typography variant="h2">
-            Check out our <Link to={routes.blog}>blog</Link>
-          </Typography>
-        </div>
-+     )}
-+   />
+    <div className={classes.root}>
+      <Typography variant="h1">Welcome to this website</Typography>
+-     <Image fixed={} />
++     <Image fixed={homeLogo.childImageSharp.fixed} />
+      <Typography variant="h2">
+        Check out our <Link to={routes.blog}>blog</Link>
+      </Typography>
+    </div>
   );
 };
 
@@ -179,7 +176,7 @@ const query = graphql`
 -       fixed {
 +       fluid(maxWidth: 1000) {
 -         ...GatsbyImageSharpFixed
-+          ...GatsbyImageSharpFluid
++         ...GatsbyImageSharpFluid
         }
       }
     }
