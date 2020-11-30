@@ -17,8 +17,8 @@ import React from 'react';
 import { Link } from 'gatsby';
 import Typography from '@material-ui/core/Typography';
 import { routes } from 'core/routes';
++ import logo from 'core/images/home-logo.png';
 import * as classes from './home.styles';
-+ const logo = require('core/images/home-logo.png');
 
 export const Home: React.FunctionComponent = () => {
   return (
@@ -83,8 +83,8 @@ import React from 'react';
 import { Link } from 'gatsby';
 import Typography from '@material-ui/core/Typography';
 import { routes } from 'core/routes';
+- import logo from 'core/images/home-logo.png';
 import * as classes from './home.styles';
-- const logo = require('core/images/home-logo.png');
 
 export const Home: React.FunctionComponent = () => {
   return (
