@@ -23,7 +23,7 @@ interface Props {
   };
 }
 
-const PostTemplate: React.FunctionComponent<Props> = (props) => {
+const PostTemplate: React.FunctionComponent<Props> = props => {
   const {
     pageContext: { slug },
     data: {

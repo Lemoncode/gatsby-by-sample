@@ -3,7 +3,6 @@ import Image from 'gatsby-image';
 import { Link, useStaticQuery, graphql } from 'gatsby';
 import Typography from '@material-ui/core/Typography';
 import { routes } from 'core/routes';
-const logo = require('core/images/home-logo.png');
 import * as classes from './home.styles';
 
 const query = graphql`
