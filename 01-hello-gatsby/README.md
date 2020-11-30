@@ -116,7 +116,7 @@ module.exports = {
 }
 ```
 
-- Now, we can rename the index page by `index.tsx`.
+- Now, we can RENAME the index page by `index.tsx`.
 
 ### ./src/index.tsx
 
