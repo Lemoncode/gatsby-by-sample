@@ -54,7 +54,7 @@ npm start
 - It's not bad but we would like to work with TypeScript, import aliases, CSS in JS, etc. What do we need? We need to install plugins:
 
 ```bash
-npm i gatsby-plugin-typescript gatsby-plugin-alias-imports gatsby-plugin-web-font-loader gatsby-plugin-manifest babel-preset-gatsby babel-plugin-emotion -D
+npm i gatsby-plugin-typescript gatsby-plugin-alias-imports gatsby-plugin-web-font-loader gatsby-plugin-manifest babel-preset-gatsby @emotion/babel-plugin -D
 ```
 
 - We have to create a file [gatsby-config](https://www.gatsbyjs.org/docs/gatsby-config/) to configure all these plugins:
@@ -112,7 +112,7 @@ module.exports = {
 ```json
 {
   "presets": ["babel-preset-gatsby"],
-  "plugins": ["emotion"]
+  "plugins": ["@emotion"]
 }
 ```
 
@@ -122,7 +122,7 @@ module.exports = {
 
 ```diff
 import React from 'react';
-+ import { css } from 'emotion';
++ import { css } from '@emotion/css';
 
 + const root = css`
 +   background-color: tomato;
@@ -314,7 +314,7 @@ export * from './footer';
 
 ```diff
 import React from 'react';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 + import { SEO } from 'common/components';
 
 ...

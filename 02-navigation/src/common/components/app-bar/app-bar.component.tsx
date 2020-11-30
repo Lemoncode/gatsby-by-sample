@@ -1,5 +1,5 @@
 import React from 'react';
-import { cx } from 'emotion';
+import { cx } from '@emotion/css';
 import { navigate } from 'gatsby';
 import Bar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';

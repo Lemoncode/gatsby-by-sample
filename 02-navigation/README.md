@@ -50,7 +50,7 @@ npm start
 ```diff
 import React from 'react';
 + import { Link } from 'gatsby';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { SEO } from 'common/components';
 
 ...
@@ -106,7 +106,7 @@ const BlogPage = () => {
 ```diff
 import React from 'react';
 - import { Link } from 'gatsby';
-- import { css } from 'emotion';
+- import { css } from '@emotion/css';
 + import { PageRendererProps } from 'gatsby';
 import { SEO } from 'common/components';
 + import { AppLayout } from 'layouts';

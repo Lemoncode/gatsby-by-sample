@@ -143,7 +143,7 @@ export const Blog: React.FunctionComponent = () => {
 ### ./src/pods/post/post.styles.ts
 
 ```javascript
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 
 export const root = css`
   height: 100%;
