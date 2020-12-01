@@ -37,6 +37,7 @@ npm install
 ![06-custom-validation](./readme-resources/06-custom-validation.png)
 
 > Pattern: `^[a-z0-9]+(?:-[a-z0-9]+)*$`
+> Message: Insert valid path name as: "valid-path"
 
 - It's important to save changes after that:
 
