@@ -10,6 +10,14 @@ npm install
 
 - First, we need to upload this app to a repository.
 
+```bash
+git init
+git remote add origin https://github.com/...
+git add .
+git commit -m "initial commit"
+git push -u origin master
+```
+
 - Create an account in [Netlify](https://www.netlify.com/).
 
 - Connect Netlify with repository:
