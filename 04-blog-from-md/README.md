@@ -76,6 +76,7 @@ query {
         path
       }
     }
+    html
   }
 }
 ```
@@ -176,7 +177,7 @@ import * as classes from './post.styles';
 interface Props {
   title: string;
   date: string;
-  body;
+  body: string;
 }
 
 export const Post: React.FunctionComponent<Props> = (props) => {
@@ -234,9 +235,9 @@ exports.createPages = async ({ graphql, actions }) => {
   const { data } = await graphql(query);
   const { postListQuery } = data;
 
-  postListQuery.nodes.forEach(node => {
+  postListQuery.nodes.forEach((node) => {
     const { path } = node.frontmatter;
-    if(path) {
+    if (path) {
       createPage({
         path,
         component: resolve(__dirname, 'src/pods/post/post.template.tsx'),
@@ -247,7 +248,6 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   });
 };
-
 ```
 
 - Create `post.template.tsx`:

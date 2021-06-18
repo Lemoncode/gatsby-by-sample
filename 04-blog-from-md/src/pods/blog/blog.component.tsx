@@ -20,7 +20,7 @@ const query = graphql`
 
 export const Blog: React.FunctionComponent = () => {
   const { postListQuery } = useStaticQuery(query);
-  
+
   return (
     <div className={classes.root}>
       <Typography variant="h1">Blog Page</Typography>

@@ -21,14 +21,6 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-web-font-loader',
-      options: {
-        google: {
-          families: ['Open Sans:300,400,800'],
-        },
-      },
-    },
-    {
       resolve: 'gatsby-plugin-manifest',
       options: {
         name: 'Gatsby by sample',
@@ -41,6 +33,7 @@ module.exports = {
       },
     },
     'gatsby-plugin-react-helmet',
+    'gatsby-plugin-image',
     'gatsby-transformer-sharp',
     'gatsby-plugin-sharp',
     {
