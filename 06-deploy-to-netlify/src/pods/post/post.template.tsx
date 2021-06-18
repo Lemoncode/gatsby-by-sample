@@ -5,7 +5,7 @@ import { AppLayout } from 'layouts';
 import { Post } from './post.component';
 
 export const query = graphql`
-  query($slug: String) {
+  query ($slug: String) {
     post: contentfulPost(path: { eq: $slug }) {
       title
       date

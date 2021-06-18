@@ -5,7 +5,7 @@ import * as classes from './post.styles';
 interface Props {
   title: string;
   date: string;
-  body;
+  body: string;
 }
 
 export const Post: React.FunctionComponent<Props> = (props) => {
