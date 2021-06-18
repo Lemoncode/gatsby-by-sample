@@ -40,10 +40,10 @@ export const Home: React.FunctionComponent = () => {
     - We don't need larger image sizes for smartphones or tables, only for desktop.
     - Render images is slow for initial page load.
 
-- So, we are going to use [gatsby-image](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-image) library along with `gatsby-transformer-sharp`, `gatsby-plugin-sharp` and `gatsby-source-filesystem`:
+- So, we are going to use [gatsby-plugin-image](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-image) library along with `gatsby-transformer-sharp`, `gatsby-plugin-sharp` and `gatsby-source-filesystem`:
 
 ```bash
-npm i gatsby-image -P
+npm i gatsby-plugin-image -P
 npm i gatsby-transformer-sharp gatsby-plugin-sharp gatsby-source-filesystem -D
 ```
 
@@ -59,6 +59,7 @@ module.exports = {
   plugins: [
     ...
     'gatsby-plugin-react-helmet',
++   'gatsby-plugin-image',
 +   'gatsby-transformer-sharp',
 +   'gatsby-plugin-sharp',
 +   {
@@ -79,7 +80,7 @@ module.exports = {
 
 ```diff
 import React from 'react';
-+ import Image from 'gatsby-image';
++ import { StaticImage } from 'gatsby-plugin-image';
 import { Link } from 'gatsby';
 import Typography from '@material-ui/core/Typography';
 import { routes } from 'core/routes';
@@ -91,7 +92,52 @@ export const Home: React.FunctionComponent = () => {
     <div className={classes.root}>
       <Typography variant="h1">Welcome to this website</Typography>
 -     <img src={logo} />
-+     <Image fixed={...} />
++     <StaticImage
++       src="../../core/images/home-logo.png"
++       alt="Lemoncode logo"
++       placeholder="blurred"
++       layout="fixed"
++       width={400}
++       height={400}
++     />
+      <Typography variant="h2">
+        Check out our <Link to={routes.blog}>blog</Link>
+      </Typography>
+    </div>
+  );
+};
+
+```
+
+> [StaticImage vs GatsbyImage](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-image#deciding-which-component-to-use)
+
+- Or we could use another component for dynamic images:
+
+
+
+### ./src/pods/home/home.component.tsx
+
+```diff
+import React from 'react';
+- import { StaticImage } from 'gatsby-plugin-image';
++ import { GatsbyImage } from 'gatsby-plugin-image';
+import { Link } from 'gatsby';
+import Typography from '@material-ui/core/Typography';
+import { routes } from 'core/routes';
+import * as classes from './home.styles';
+
+export const Home: React.FunctionComponent = () => {
+  return (
+    <div className={classes.root}>
+      <Typography variant="h1">Welcome to this website</Typography>
+-     <StaticImage
+-       src="../../core/images/home-logo.png"
+-       alt="Lemoncode logo"
+-       placeholder="blurred"
+-       layout="fixed"
+-       width={400}
+-       height={400}
+-     />
       <Typography variant="h2">
         Check out our <Link to={routes.blog}>blog</Link>
       </Typography>
@@ -107,23 +153,21 @@ export const Home: React.FunctionComponent = () => {
 query {
   homeLogo: file(relativePath: {eq: "home-logo.png"}) {
     childImageSharp {
-      fixed {
-        base64
-        originalName
-      }
+      gatsbyImageData(layout:FIXED, placeholder: BLURRED)
     }
   }
 }
 
 ```
 
-- Use it in `home` component. If we want to get all properties, gatsby has a special keyword or [fragments](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-image#fragments) to get it:
+- Use it in `home` component:
 
 ### ./src/pods/home/home.component.tsx
 
 ```diff
 import React from 'react';
-import Image from 'gatsby-image';
+- import { GatsbyImage } from 'gatsby-plugin-image';
++ import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 - import { Link } from 'gatsby';
 + import { Link, useStaticQuery, graphql } from 'gatsby';
 import Typography from '@material-ui/core/Typography';
@@ -134,9 +178,7 @@ import * as classes from './home.styles';
 +   query {
 +     homeLogo: file(relativePath: { eq: "home-logo.png" }) {
 +       childImageSharp {
-+         fixed {
-+           ...GatsbyImageSharpFixed
-+         }
++         gatsbyImageData(layout: FIXED, placeholder: BLURRED)
 +       }
 +     }
 +   }
@@ -148,7 +190,6 @@ export const Home: React.FunctionComponent = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h1">Welcome to this website</Typography>
--     <Image fixed={} />
 +     <Image fixed={homeLogo.childImageSharp.fixed} />
       <Typography variant="h2">
         Check out our <Link to={routes.blog}>blog</Link>
@@ -159,7 +200,9 @@ export const Home: React.FunctionComponent = () => {
 
 ```
 
-- It load an image resized to `400x400`. If we want to get image size by `screen size`, we have to use `fluid` instead:
+> [Docs](https://www.gatsbyjs.com/docs/reference/built-in-components/gatsby-plugin-image/)
+
+- It load an image resized to `400x400`. If we want to get image size by `screen size`, we have to use `CONSTRAINED` instead:
 
 > NOTE: Show `Network tab`, `disable cache` in chrome dev tools and `srcset`
 > [srcset](https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images)
@@ -173,25 +216,12 @@ const query = graphql`
   query {
     homeLogo: file(relativePath: { eq: "home-logo.png" }) {
       childImageSharp {
--       fixed {
-+       fluid(maxWidth: 1000) {
--         ...GatsbyImageSharpFixed
-+         ...GatsbyImageSharpFluid
-        }
+-       gatsbyImageData(layout: FIXED, placeholder: BLURRED)
++       gatsbyImageData(layout: CONSTRAINED, placeholder: BLURRED)
       }
     }
   }
 `;
-
-export const Home: React.FunctionComponent = () => (
-...
-+       <div className={classes.imageContainer}>
--         <Image fixed={homeLogo.childImageSharp.fixed} />
-+         <Image fluid={homeLogo.childImageSharp.fluid} />
-+       </div>
-        ...
-  />
-);
 
 ```
 
