@@ -1,5 +1,5 @@
 import React from 'react';
-import Image from 'gatsby-image';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import { Link, useStaticQuery, graphql } from 'gatsby';
 import Typography from '@material-ui/core/Typography';
 import { routes } from 'core/routes';
@@ -9,9 +9,7 @@ const query = graphql`
   query {
     homeLogo: file(relativePath: { eq: "home-logo.png" }) {
       childImageSharp {
-        fluid(maxWidth: 1000) {
-          ...GatsbyImageSharpFluid
-        }
+        gatsbyImageData(layout: CONSTRAINED, placeholder: BLURRED)
       }
     }
   }
@@ -19,13 +17,10 @@ const query = graphql`
 
 export const Home: React.FunctionComponent = () => {
   const { homeLogo } = useStaticQuery(query);
-
   return (
     <div className={classes.root}>
       <Typography variant="h1">Welcome to this website</Typography>
-      <div className={classes.imageContainer}>
-        <Image fluid={homeLogo.childImageSharp.fluid} />
-      </div>
+      <GatsbyImage image={getImage(homeLogo)} alt="Lemoncode logo" />
       <Typography variant="h2">
         Check out our <Link to={routes.blog}>blog</Link>
       </Typography>
