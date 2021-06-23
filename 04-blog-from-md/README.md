@@ -75,8 +75,8 @@ query {
         title
         path
       }
+      html
     }
-    html
   }
 }
 ```
