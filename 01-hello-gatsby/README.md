@@ -216,7 +216,7 @@ const query = graphql`
   }
 `;
 
-export const SEO: React.StatelessComponent<Props> = (props) => {
+export const SEO: React.FunctionComponent<Props> = (props) => {
   const { description, lang, meta, keywords, title } = props;
   const data = useStaticQuery(query);
   const metaDescription = description || data.site.siteMetadata.description;
