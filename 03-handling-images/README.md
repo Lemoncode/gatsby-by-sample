@@ -190,7 +190,7 @@ export const Home: React.FunctionComponent = () => {
   return (
     <div className={classes.root}>
       <Typography variant="h1">Welcome to this website</Typography>
-+     <Image fixed={homeLogo.childImageSharp.fixed} />
++     <GatsbyImage image={getImage(homeLogo)} alt="Lemoncode logo" />
       <Typography variant="h2">
         Check out our <Link to={routes.blog}>blog</Link>
       </Typography>
